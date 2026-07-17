@@ -4,7 +4,7 @@
 
 ![DevShed Header](INSERT_HEADER_IMAGE_URL_HERE)
 
-DevShed is a high-performance, native macOS utility built for developers who need to keep their workstations lean. Xcode is notorious for hoarding gigabytes of hidden junk; DevShed puts that space back in your hands with a native, one-click interface.
+DevShed is a high-performance, native macOS utility built for developers who need to keep their workstations clean. Xcode is notorious for hoarding gigabytes of hidden junk; DevShed puts that space back in your hands with a native, one-click interface. DevShed is free to use, forever.
 
 ---
 
@@ -21,17 +21,6 @@ DevShed is a high-performance, native macOS utility built for developers who nee
 ## The Dashboard
 
 ![DevShed UI Screenshot](INSERT_DASHBOARD_IMAGE_URL_HERE)
-
----
-
-## Getting Started
-
-1.  **Download:** Grab the latest .zip release from the [Releases Page](https://github.com/YOUR_GITHUB_USERNAME/DevShed/releases).
-2.  **Install:** Move DevShed.app to your Applications folder.
-3.  **Launch:** Open the app and find the shipping box icon in your menu bar.
-4.  **Clean:** Click to see your storage breakdown and reclaim your disk space.
-
-*Note: If you receive a security prompt, right-click the app in Finder, select Open, and confirm the security dialog.*
 
 ---
 
@@ -56,3 +45,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 DevShed is a CodeArc Studio project. We build lightweight utilities for developers who value performance and clean workspaces.
 
 [Visit CodeArc.studio](https://codearc.studio)
+
