@@ -1,6 +1,6 @@
 # DevShed
 
-### The leanest way to manage your Xcode storage.
+### The cleanest way to manage your Xcode storage.
 
 ![DevShed Header](INSERT_HEADER_IMAGE_URL_HERE)
 
