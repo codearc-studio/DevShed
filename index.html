@@ -6,6 +6,10 @@
     <title>DevShed — One-Click Xcode Storage Cleaner (Coming Soon)</title>
     <meta name="description" content="Surgically reclaim storage wasted by Xcode. Clean Derived Data, Simulator Cache, Archives, and Multi-platform Packages securely. Releasing very soon!">
     
+    <!-- Theme Colors for Browser Address and Tab Bars -->
+    <meta name="theme-color" content="#060608" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f6f6f9" media="(prefers-color-scheme: light)">
+
     <!-- Open Graph / Facebook / Slack / iMessage Preview Tags -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://devshed.codearc.studio/">
@@ -34,15 +38,11 @@
     
     <style>
         :root {
-            --brand-blue: #007AFF;
+            --brand-blue-light: #007AFF;
+            --brand-blue-dark: #0A84FF;
         }
 
-        ::selection {
-            background: rgba(10, 132, 255, 0.15);
-            color: #0A84FF;
-        }
-        
-        /* Premium Background Ambient Orbs */
+        /* Premium Background Ambient Orbs Animation */
         @keyframes auroraMove {
             0% { transform: translate(0px, 0px) rotate(0deg); }
             50% { transform: translate(45px, -45px) rotate(180deg) scale(1.15); }
@@ -90,7 +90,6 @@
 
         /* Adaptive Dark/Light Variables */
         @media (prefers-color-scheme: dark) {
-            :root { --brand-blue: #0A84FF; }
             body { background-color: #060608 !important; color: #f5f5f7 !important; }
             .panel-card { background: rgba(16, 16, 22, 0.5) !important; border-color: rgba(255, 255, 255, 0.05) !important; }
             .text-title { color: #ffffff !important; }
@@ -98,10 +97,29 @@
             .glass-nav { background: rgba(6, 6, 8, 0.75) !important; border-color: rgba(255, 255, 255, 0.05) !important; }
             .mac-video-wrapper { background: rgba(10, 10, 12, 0.9); border-color: rgba(255, 255, 255, 0.08); box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7); }
             
-            ::-webkit-scrollbar { width: 8px; }
+            /* Custom Scrollbars for Dark Mode configured with Dark Brand Colors */
+            ::-webkit-scrollbar { width: 10px; }
             ::-webkit-scrollbar-track { background: #060608; }
-            ::-webkit-scrollbar-thumb { background: rgba(10, 132, 255, 0.25); border-radius: 99px; }
-            ::-webkit-scrollbar-thumb:hover { background: rgba(10, 132, 255, 0.45); }
+            ::-webkit-scrollbar-thumb {
+                background: rgba(10, 132, 255, 0.25);
+                border-radius: 20px;
+                border: 3px solid #060608;
+            }
+            ::-webkit-scrollbar-thumb:hover { background: rgba(10, 132, 255, 0.55); }
+
+            /* Selection Colors - Dark Mode */
+            ::selection {
+                background: rgba(10, 132, 255, 0.15);
+                color: #0A84FF;
+            }
+
+            /* Custom Focus Rings for Dark Mode input fields */
+            input:focus-visible {
+                outline: none;
+                border-color: #0A84FF !important;
+                box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.25);
+                transition: box-shadow 0.2s ease, border-color 0.2s ease;
+            }
         }
 
         @media (prefers-color-scheme: light) {
@@ -112,10 +130,29 @@
             .glass-nav { background: rgba(246, 246, 249, 0.8) !important; border-color: rgba(0, 0, 0, 0.05) !important; }
             .mac-video-wrapper { background: #ffffff; border-color: rgba(0, 0, 0, 0.08); box-shadow: 0 25px 50px -15px rgba(0, 0, 0, 0.1); }
             
-            ::-webkit-scrollbar { width: 8px; }
+            /* Custom Scrollbars for Light Mode configured with Light Brand Colors */
+            ::-webkit-scrollbar { width: 10px; }
             ::-webkit-scrollbar-track { background: #f6f6f9; }
-            ::-webkit-scrollbar-thumb { background: rgba(0, 122, 255, 0.2); border-radius: 99px; }
-            ::-webkit-scrollbar-thumb:hover { background: rgba(0, 122, 255, 0.45); }
+            ::-webkit-scrollbar-thumb {
+                background: rgba(0, 122, 255, 0.25);
+                border-radius: 20px;
+                border: 3px solid #f6f6f9;
+            }
+            ::-webkit-scrollbar-thumb:hover { background: rgba(0, 122, 255, 0.55); }
+
+            /* Selection Colors - Light Mode */
+            ::selection {
+                background: rgba(0, 122, 255, 0.15);
+                color: #007AFF;
+            }
+
+            /* Custom Focus Rings for Light Mode input fields */
+            input:focus-visible {
+                outline: none;
+                border-color: #007AFF !important;
+                box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.25);
+                transition: box-shadow 0.2s ease, border-color 0.2s ease;
+            }
         }
         
         body { font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; width: 100%; }
@@ -254,7 +291,7 @@
                         <!-- Sheet Monkey automatic date tracker metadata -->
                         <input type="hidden" name="Created" value="x-sheetmonkey-current-date-time" />
                         
-                        <input type="email" name="Email" required placeholder="Enter your email address" class="px-4 py-3 rounded-xl bg-gray-500/5 dark:bg-white/5 border border-gray-500/15 focus:outline-none focus:border-blue-500 text-title text-sm flex-grow transition-all duration-300">
+                        <input type="email" name="Email" required placeholder="Enter your email address" class="px-4 py-3 rounded-xl bg-gray-500/5 dark:bg-white/5 border border-gray-500/15 focus:outline-none text-title text-sm flex-grow transition-all duration-300">
                         <button type="submit" class="bg-gradient-to-b from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-3 rounded-xl font-bold shadow-md hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 text-sm flex items-center justify-center space-x-2 flex-shrink-0">
                             <i data-lucide="bell" class="w-4 h-4"></i>
                             <span>Notify Me</span>
