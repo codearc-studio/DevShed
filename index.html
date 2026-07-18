@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en" class="overflow-x-hidden">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevShed — One-Click Xcode Storage Cleaner (Coming Soon)</title>
+    <meta name="description" content="Surgically reclaim storage wasted by Xcode. Clean Derived Data, Simulator Cache, Archives, and Multi-platform Packages securely. Releasing very soon!">
+    
+    <!-- Local Favicon Fallback -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700;800&family=JetBrains+Mono:wght=400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --brand-blue: #007AFF;
+        }
+
+        ::selection {
+            background: rgba(10, 132, 255, 0.15);
+            color: #0A84FF;
+        }
+        
+        /* Premium Background Ambient Orbs */
+        @keyframes auroraMove {
+            0% { transform: translate(0px, 0px) rotate(0deg); }
+            50% { transform: translate(45px, -45px) rotate(180deg) scale(1.15); }
+            100% { transform: translate(0px, 0px) rotate(360deg); }
+        }
+        
+        @keyframes subtleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .ambient-glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(10, 132, 255, 0.08) 0%, rgba(99, 102, 241, 0.03) 50%, transparent 100%);
+            filter: blur(60px);
+            animation: auroraMove 25s infinite linear;
+            pointer-events: none;
+            z-index: 0;
+        }
+        @media (min-width: 768px) {
+            .ambient-glow {
+                width: 700px;
+                height: 700px;
+                filter: blur(100px);
+            }
+        }
+        
+        .float-slow {
+            animation: subtleFloat 8s ease-in-out infinite;
+        }
+
+        /* Kinetic Scroll Entry Animation classes */
+        .reveal-kinetic {
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+        .reveal-kinetic.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Adaptive Dark/Light Variables */
+        @media (prefers-color-scheme: dark) {
+            :root { --brand-blue: #0A84FF; }
+            body { background-color: #060608 !important; color: #f5f5f7 !important; }
+            .panel-card { background: rgba(16, 16, 22, 0.5) !important; border-color: rgba(255, 255, 255, 0.05) !important; }
+            .text-title { color: #ffffff !important; }
+            .text-body { color: #9a9ab0 !important; }
+            .glass-nav { background: rgba(6, 6, 8, 0.75) !important; border-color: rgba(255, 255, 255, 0.05) !important; }
+            .mac-video-wrapper { background: rgba(10, 10, 12, 0.9); border-color: rgba(255, 255, 255, 0.08); box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7); }
+            
+            ::-webkit-scrollbar { width: 8px; }
+            ::-webkit-scrollbar-track { background: #060608; }
+            ::-webkit-scrollbar-thumb { background: rgba(10, 132, 255, 0.25); border-radius: 99px; }
+            ::-webkit-scrollbar-thumb:hover { background: rgba(10, 132, 255, 0.45); }
+        }
+
+        @media (prefers-color-scheme: light) {
+            body { background-color: #f6f6f9 !important; color: #1d1d1f !important; }
+            .panel-card { background: rgba(255, 255, 255, 0.75) !important; border-color: rgba(0, 0, 0, 0.05) !important; }
+            .text-title { color: #0d0d11 !important; }
+            .text-body { color: #57576a !important; }
+            .glass-nav { background: rgba(246, 246, 249, 0.8) !important; border-color: rgba(0, 0, 0, 0.05) !important; }
+            .mac-video-wrapper { background: #ffffff; border-color: rgba(0, 0, 0, 0.08); box-shadow: 0 25px 50px -15px rgba(0, 0, 0, 0.1); }
+            
+            ::-webkit-scrollbar { width: 8px; }
+            ::-webkit-scrollbar-track { background: #f6f6f9; }
+            ::-webkit-scrollbar-thumb { background: rgba(0, 122, 255, 0.2); border-radius: 99px; }
+            ::-webkit-scrollbar-thumb:hover { background: rgba(0, 122, 255, 0.45); }
+        }
+        
+        body { font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; width: 100%; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        .panel-card {
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .panel-card:hover {
+            border-color: rgba(10, 132, 255, 0.25) !important;
+            box-shadow: 0 30px 60px -12px rgba(10, 132, 255, 0.08);
+        }
+
+        /* FAQ Smooth Height Transitions */
+        .faq-wrapper {
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .faq-content {
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .faq-content.open {
+            grid-template-rows: 1fr;
+        }
+        .faq-inner {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="antialiased relative overflow-x-hidden w-full">
+
+    <!-- Background glow objects wrapper clipped securely within device boundary -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute top-10 left-[12%] ambient-glow"></div>
+        <div class="absolute top-[35%] right-[8%] ambient-glow" style="animation-delay: -6s; background: radial-gradient(circle, rgba(99, 102, 241, 0.05) 0%, transparent 65%);"></div>
+    </div>
+
+    <!-- Header Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-nav backdrop-blur-md border-b transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex justify-between items-center">
+            <a href="#" class="flex items-center space-x-2.5 group flex-shrink-0">
+                <div class="w-6 h-6 rounded-lg overflow-hidden flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300 bg-blue-600/10">
+                    <img src="logo.png" alt="DevShed Logo" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='https://placehold.co/64x64/007aff/ffffff?text=DS';">
+                </div>
+                <div class="flex items-baseline space-x-1.5">
+                    <span class="font-bold text-sm tracking-tight text-title">DevShed</span>
+                    <span class="text-[9px] font-medium mono text-gray-400 dark:text-gray-500 transition-colors group-hover:text-blue-500 hidden sm:inline">by CodeArc.studio</span>
+                </div>
+            </a>
+            
+            <!-- Desktop Nav Links -->
+            <div class="hidden md:flex items-center space-x-6 text-xs font-semibold">
+                <a href="#calculator" class="text-body hover:text-blue-500 transition-colors duration-200 flex items-center space-x-1">
+                    <i data-lucide="calculator" class="w-3.5 h-3.5"></i>
+                    <span>Space Calculator</span>
+                </a>
+                <a href="#features" class="text-body hover:text-blue-500 transition-colors duration-200 flex items-center space-x-1">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                    <span>Features</span>
+                </a>
+                <a href="#targets" class="text-body hover:text-blue-500 transition-colors duration-200 flex items-center space-x-1">
+                    <i data-lucide="target" class="w-3.5 h-3.5"></i>
+                    <span>What We Clean</span>
+                </a>
+                <a href="#faq" class="text-body hover:text-blue-500 transition-colors duration-200 flex items-center space-x-1">
+                    <i data-lucide="help-circle" class="w-3.5 h-3.5"></i>
+                    <span>FAQ</span>
+                </a>
+                <a href="#notify-section" class="bg-blue-600/10 text-blue-500 dark:text-blue-400 border border-blue-500/20 hover:bg-blue-600 hover:text-white px-3.5 py-1.5 rounded-lg font-bold shadow-sm transition-all duration-300 hover:scale-[1.03] active:scale-95 flex items-center space-x-1.5 flex-shrink-0">
+                    <i data-lucide="bell" class="w-3.5 h-3.5"></i>
+                    <span>Get Notified</span>
+                </a>
+            </div>
+
+            <!-- Mobile Drawer Button Toggle -->
+            <button id="mobile-menu-toggle" aria-label="Toggle Navigation Menu" class="md:hidden flex items-center justify-center p-2 rounded-lg text-body hover:bg-black/5 dark:hover:bg-white/5 transition-colors focus:outline-none flex-shrink-0">
+                <i data-lucide="menu" id="menu-icon" class="w-5 h-5 transition-transform duration-300"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Drawer Menu Overlay -->
+        <div id="mobile-menu-drawer" class="hidden md:hidden absolute top-14 left-0 w-full glass-nav border-b border-gray-500/10 backdrop-blur-lg flex flex-col p-6 space-y-4 shadow-xl z-40 transition-all duration-300">
+            <a href="#calculator" class="mobile-nav-link text-body hover:text-blue-500 text-sm font-semibold py-2.5 flex items-center space-x-2 border-b border-gray-500/5">
+                <i data-lucide="calculator" class="w-4 h-4"></i>
+                <span>Space Calculator</span>
+            </a>
+            <a href="#features" class="mobile-nav-link text-body hover:text-blue-500 text-sm font-semibold py-2.5 flex items-center space-x-2 border-b border-gray-500/5">
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
+                <span>Features</span>
+            </a>
+            <a href="#targets" class="mobile-nav-link text-body hover:text-blue-500 text-sm font-semibold py-2.5 flex items-center space-x-2 border-b border-gray-500/5">
+                <i data-lucide="target" class="w-4 h-4"></i>
+                <span>What We Clean</span>
+            </a>
+            <a href="#faq" class="mobile-nav-link text-body hover:text-blue-500 text-sm font-semibold py-2.5 flex items-center space-x-2 border-b border-gray-500/5">
+                <i data-lucide="help-circle" class="w-4 h-4"></i>
+                <span>FAQ</span>
+            </a>
+            <a href="#notify-section" class="bg-blue-600 hover:bg-blue-500 text-white w-full py-3 rounded-xl font-bold shadow-sm transition-all text-center flex items-center justify-center space-x-2 text-sm mt-2">
+                <i data-lucide="bell" class="w-4 h-4"></i>
+                <span>Get Notified on Release</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Showcase Section -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 pt-24 md:pt-36 pb-12 md:pb-20 relative z-10">
+        <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            
+            <div class="lg:col-span-5 space-y-6 md:space-y-8 text-left">
+                <!-- PREMIUM COMING SOON STATUS BADGE -->
+                <div class="reveal-kinetic active inline-flex items-center space-x-2 bg-blue-500/10 text-blue-600 dark:text-blue-400 px-3 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase mono">
+                    <i data-lucide="clock" class="w-3 h-3"></i>
+                    <span>Coming Soon</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+                </div>
+                
+                <h1 class="reveal-kinetic active text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-title leading-[1.125] stroke-none" style="animation-delay: 50ms;">
+                    The cleanest way to <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-indigo-400 to-blue-600">manage Xcode storage.</span>
+                </h1>
+                
+                <p class="reveal-kinetic active text-sm text-body leading-relaxed max-w-lg" style="animation-delay: 100ms;">
+                    Xcode quietly hoards gigabytes of hidden build dependencies, compiler logs, and orphaned simulators. DevShed lets you surgically reclaim your disk space with a lightweight, native macOS menu bar interface.
+                </p>
+                
+                <!-- New Sheet Monkey integrated Subscription Form -->
+                <div id="notify-section" class="reveal-kinetic active pt-2 space-y-3" style="animation-delay: 150ms;">
+                    <p class="text-xs font-bold text-title flex items-center space-x-1.5">
+                        <i data-lucide="mail" class="w-4 h-4 text-blue-500"></i>
+                        <span>Get notified immediately at launch:</span>
+                    </p>
+                    
+                    <form id="hero-signup-form" action="https://api.sheetmonkey.io/form/7REmn3wUQXDiupKFNo878j" method="POST" class="flex flex-col sm:flex-row items-stretch gap-2.5 max-w-md">
+                        <!-- Sheet Monkey automatic date tracker metadata -->
+                        <input type="hidden" name="Created" value="x-sheetmonkey-current-date-time" />
+                        
+                        <input type="email" name="Email" required placeholder="Enter your email address" class="px-4 py-3 rounded-xl bg-gray-500/5 dark:bg-white/5 border border-gray-500/15 focus:outline-none focus:border-blue-500 text-title text-sm flex-grow transition-all duration-300">
+                        <button type="submit" class="bg-gradient-to-b from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-3 rounded-xl font-bold shadow-md hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 text-sm flex items-center justify-center space-x-2 flex-shrink-0">
+                            <i data-lucide="bell" class="w-4 h-4"></i>
+                            <span>Notify Me</span>
+                        </button>
+                    </form>
+                    <div id="hero-signup-success" class="hidden text-xs text-green-500 font-bold flex items-center space-x-1.5 transition-all duration-300">
+                        <i data-lucide="check-circle" class="w-4 h-4"></i>
+                        <span>Awesome! We've added you to the launch list. No spam, ever.</span>
+                    </div>
+
+                    <p class="text-[10px] text-gray-400 dark:text-gray-500">
+                        DevShed will be 100% free with zero tracking or telemetry.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Beautiful macOS framed app demo video player -->
+            <div class="lg:col-span-7 reveal-kinetic active w-full" style="animation-delay: 200ms;">
+                <div class="mac-video-wrapper rounded-xl border overflow-hidden relative group">
+                    <div class="relative w-full aspect-[1660/1080] overflow-hidden bg-black/40">
+                        <video id="demo-player" class="w-full h-full object-cover" autoplay loop muted playsinline>
+                            <source src="demo.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        
+                        <!-- Overlay on hover to hint player control -->
+                        <div class="absolute bottom-4 right-4 bg-black/60 backdrop-blur-md text-white rounded-lg p-2 flex items-center space-x-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none text-[10px] font-bold">
+                            <i data-lucide="monitor-play" class="w-3.5 h-3.5 text-blue-400"></i>
+                            <span>Desktop App Preview</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Space Calculator Section -->
+    <section id="calculator" class="max-w-6xl mx-auto px-4 sm:px-6 py-12 border-t border-gray-500/10 relative z-10">
+        <div class="grid lg:grid-cols-12 gap-8 items-center bg-gray-500/[0.01] border border-gray-500/10 rounded-3xl p-6 sm:p-8 lg:p-12 backdrop-blur-xl">
+            <div class="lg:col-span-5 space-y-6">
+                <span class="text-xs font-bold text-blue-500 uppercase tracking-widest mono flex items-center space-x-1">
+                    <i data-lucide="calculator" class="w-3.5 h-3.5"></i>
+                    <span>Space Calculator</span>
+                </span>
+                <h3 class="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-title leading-tight">
+                    See How Much Space You Can Reclaim
+                </h3>
+                <p class="text-sm text-body leading-relaxed">
+                    Xcode build folders and temporary testing profiles balloon in size silently. Use our calculator to discover how much wasted space you can easily prevent from filling up your Mac.
+                </p>
+                <div class="p-4 bg-blue-500/5 rounded-xl border border-blue-500/10 flex items-start space-x-3">
+                    <i data-lucide="heart" class="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5"></i>
+                    <p class="text-[11px] text-body leading-relaxed">
+                        <strong>Mac Health Tip:</strong> Keeping at least 15% of your hard drive clear avoids system slowdowns and keeps macOS run times fast.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Dynamic Simple Calculator Panel -->
+            <div class="lg:col-span-7 bg-white/[0.02] border border-gray-500/10 rounded-2xl p-6 space-y-6">
+                <div class="space-y-4">
+                    <!-- Slider 1 -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs font-bold text-title">
+                            <span>How active is your development?</span>
+                            <span id="slider-build-val" class="text-blue-500 font-mono">Moderate (Weekly)</span>
+                        </div>
+                        <input id="slider-builds" type="range" min="1" max="3" value="2" class="w-full h-1.5 bg-gray-500/20 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                        <div class="flex justify-between text-[10px] text-body">
+                            <span>Light (Casual)</span>
+                            <span>Moderate</span>
+                            <span>Heavy (Daily)</span>
+                        </div>
+                    </div>
+
+                    <!-- Slider 2 -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs font-bold text-title">
+                            <span>Your Mac's total hard drive size?</span>
+                            <span id="slider-size-val" class="text-blue-500 font-mono">512 GB</span>
+                        </div>
+                        <input id="slider-size" type="range" min="1" max="4" value="2" class="w-full h-1.5 bg-gray-500/20 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                        <div class="flex justify-between text-[10px] text-body">
+                            <span>256 GB</span>
+                            <span>512 GB</span>
+                            <span>1 TB</span>
+                            <span>2 TB+</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-gray-500/10 pt-6">
+                    <div class="bg-blue-500/5 border border-blue-500/10 p-4 rounded-xl">
+                        <span class="text-[10px] font-bold text-gray-400 block tracking-wide uppercase">Cleanable Space / Yr</span>
+                        <span id="calc-est-savings" class="text-xl sm:text-2xl font-black text-blue-500 block font-mono mt-1">240 GB</span>
+                        <span class="text-[9px] text-body block mt-1">of temporary files</span>
+                    </div>
+                    <div class="bg-green-500/5 border border-green-500/10 p-4 rounded-xl">
+                        <span class="text-[10px] font-bold text-gray-400 block tracking-wide uppercase">Drive Space Relieved</span>
+                        <span id="calc-est-percent" class="text-xl sm:text-2xl font-black text-green-500 block font-mono mt-1">47%</span>
+                        <span class="text-[9px] text-body block mt-1">of your total storage</span>
+                    </div>
+                    <div class="bg-purple-500/5 border border-purple-500/10 p-4 rounded-xl sm:col-span-1 col-span-1">
+                        <span class="text-[10px] font-bold text-gray-400 block tracking-wide uppercase">Lifespan Rating</span>
+                        <span id="calc-est-lifespan" class="text-xl sm:text-2xl font-black text-purple-500 block font-mono mt-1">Highly Optimized</span>
+                        <span class="text-[9px] text-body block mt-1">preserved drive health</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Surgical Cleanup Features Deep Dive -->
+    <section id="features" class="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-20 border-t border-gray-500/10 relative z-10">
+        <div class="max-w-3xl mb-12 md:mb-16">
+            <span class="text-xs font-bold text-blue-500 uppercase tracking-widest mono flex items-center space-x-1">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                <span>Features</span>
+            </span>
+            <h2 class="text-2xl md:text-3xl font-black tracking-tight text-title mt-2 mb-4">
+                Engineered for High-Performance Workspaces
+            </h2>
+            <p class="text-sm text-body leading-relaxed">
+                DevShed is more than a directory eraser. Written natively, it targets exact diagnostic registries, packages, and redundant virtual states to keep compile times low and free storage high.
+            </p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <!-- Grid Feature 1 -->
+            <div class="reveal-kinetic p-6 rounded-xl border border-gray-500/5 bg-gray-500/[0.01] hover:border-blue-500/30 hover:bg-blue-500/[0.02] hover:-translate-y-1 transition-all duration-300 group">
+                <div class="p-2.5 bg-blue-500/10 text-blue-500 w-10 h-10 rounded-lg flex items-center justify-center mb-4">
+                    <i data-lucide="ghost" class="w-5 h-5"></i>
+                </div>
+                <h4 class="font-bold text-sm text-title mb-2 group-hover:text-blue-500 transition-colors">Ghost Cache Tracking</h4>
+                <p class="text-xs text-body leading-relaxed">
+                    Xcode stores huge builds even after you delete or relocate the workspace file. DevShed queries original file logs to spot these orphaned, heavy folders and flags them as <em>Ghost Caches</em> for painless deletion.
+                </p>
+            </div>
+
+            <!-- Grid Feature 2 -->
+            <div class="reveal-kinetic p-6 rounded-xl border border-gray-500/5 bg-gray-500/[0.01] hover:border-purple-500/30 hover:bg-purple-500/[0.02] hover:-translate-y-1 transition-all duration-300 group" style="animation-delay: 40ms;">
+                <div class="p-2.5 bg-purple-500/10 text-purple-500 w-10 h-10 rounded-lg flex items-center justify-center mb-4">
+                    <i data-lucide="file-spreadsheet" class="w-5 h-5"></i>
+                </div>
+                <h4 class="font-bold text-sm text-title mb-2 group-hover:text-purple-500 transition-colors">Interactive Purge Planner</h4>
+                <p class="text-xs text-body leading-relaxed">
+                    Prevent accidental rebuild slowdowns. Use the built-in Interactive Purge Planner to inspect files, view sizes down to individual paths, and selectively exclude mission-critical targets prior to wiping.
+                </p>
+            </div>
+
+            <!-- Grid Feature 3 -->
+            <div class="reveal-kinetic p-6 rounded-xl border border-gray-500/5 bg-gray-500/[0.01] hover:border-pink-500/30 hover:bg-pink-500/[0.02] hover:-translate-y-1 transition-all duration-300 group" style="animation-delay: 80ms;">
+                <div class="p-2.5 bg-pink-500/10 text-pink-500 w-10 h-10 rounded-lg flex items-center justify-center mb-4">
+                    <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                </div>
+                <h4 class="font-bold text-sm text-title mb-2 group-hover:text-pink-500 transition-colors">Execution Safe Mode</h4>
+                <p class="text-xs text-body leading-relaxed">
+                    Avoid index corruption. When active, Safe Mode prompts you to save current project files and automatically closes running Xcode processes gently before launching any deletion routine.
+                </p>
+            </div>
+
+            <!-- Grid Feature 4 -->
+            <div class="reveal-kinetic p-6 rounded-xl border border-gray-500/5 bg-gray-500/[0.01] hover:border-green-500/30 hover:bg-green-500/[0.02] hover:-translate-y-1 transition-all duration-300 group">
+                <div class="p-2.5 bg-green-500/10 text-green-500 w-10 h-10 rounded-lg flex items-center justify-center mb-4">
+                    <i data-lucide="search-code" class="w-5 h-5"></i>
+                </div>
+                <h4 class="font-bold text-sm text-title mb-2 group-hover:text-green-500 transition-colors">Node Modules Watcher</h4>
+                <p class="text-xs text-body leading-relaxed">
+                    Add custom developer roots. Locate, catalog, and clean out heavy, nested local `node_modules` folders hidden deep inside neglected directories or expired project archives.
+                </p>
+            </div>
+
+            <!-- Grid Feature 5 -->
+            <div class="reveal-kinetic p-6 rounded-xl border border-gray-500/5 bg-gray-500/[0.01] hover:border-orange-500/30 hover:bg-orange-500/[0.02] hover:-translate-y-1 transition-all duration-300 group" style="animation-delay: 40ms;">
+                <div class="p-2.5 bg-orange-500/10 text-orange-500 w-10 h-10 rounded-lg flex items-center justify-center mb-4">
+                    <i data-lucide="smartphone" class="w-5 h-5"></i>
+                </div>
+                <h4 class="font-bold text-sm text-title mb-2 group-hover:text-orange-500 transition-colors">Simulator Device Tracker</h4>
+                <p class="text-xs text-body leading-relaxed">
+                    Review simulated active targets directly. Safely clear device runtime containers, clean stale log states, and erase legacy iOS simulator versions abandoned by Apple system revisions.
+                </p>
+            </div>
+
+            <!-- Grid Feature 6 -->
+            <div class="reveal-kinetic p-6 rounded-xl border border-gray-500/5 bg-gray-500/[0.01] hover:border-cyan-500/30 hover:bg-cyan-500/[0.02] hover:-translate-y-1 transition-all duration-300 group" style="animation-delay: 80ms;">
+                <div class="p-2.5 bg-cyan-500/10 text-cyan-500 w-10 h-10 rounded-lg flex items-center justify-center mb-4">
+                    <i data-lucide="activity" class="w-5 h-5"></i>
+                </div>
+                <h4 class="font-bold text-sm text-title mb-2 group-hover:text-cyan-500 transition-colors">Active Auto Pilot</h4>
+                <p class="text-xs text-body leading-relaxed">
+                    Unattended storage maintenance. Set your optimal threshold limits, and let DevShed safely wipe expired caching repositories dynamically in the background without disturbing active flows.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Core Storage Targets Overview -->
+    <section id="targets" class="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16 border-t border-gray-500/10 relative z-10">
+        <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            <div class="lg:col-span-5 lg:sticky lg:top-24 space-y-6">
+                <span class="text-xs font-bold text-blue-500 uppercase tracking-widest mono flex items-center space-x-1">
+                    <i data-lucide="target" class="w-3.5 h-3.5"></i>
+                    <span>Purge Targets</span>
+                </span>
+                <h3 class="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-title leading-tight">
+                    Multi-Platform & Native Support
+                </h3>
+                <p class="text-sm text-body leading-relaxed">
+                    Xcode generates different types of caching. DevShed maps out all developer cache directories natively—giving you full transparency of what can be cleaned.
+                </p>
+                <div class="p-4 bg-blue-500/5 rounded-xl border border-blue-500/10 flex items-start space-x-3">
+                    <i data-lucide="info" class="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5"></i>
+                    <p class="text-xs text-body leading-relaxed">
+                        <strong>Swift SPM Cache Protection:</strong> Excludes core SPM artifact registries by default to preserve compiler indexes and save internet bandwidth on your next build.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="lg:col-span-7 space-y-4">
+                <!-- Target Item 1 -->
+                <div class="reveal-kinetic p-5 panel-card border rounded-2xl flex items-start space-x-4 hover:translate-x-2 transition-transform duration-300">
+                    <div class="p-2.5 bg-blue-500/10 text-blue-500 rounded-xl flex-shrink-0">
+                        <i data-lucide="folder" class="w-4.5 h-4.5"></i>
+                    </div>
+                    <div class="space-y-1">
+                        <h5 class="text-sm font-bold text-title">Derived Data & Archives</h5>
+                        <p class="text-xs text-body leading-relaxed">Clears intermediate compilations, module maps, debug configurations, and redundant App Store release archives securely.</p>
+                    </div>
+                </div>
+                
+                <!-- Target Item 2 -->
+                <div class="reveal-kinetic p-5 panel-card border rounded-2xl flex items-start space-x-4 hover:translate-x-2 transition-transform duration-300">
+                    <div class="p-2.5 bg-orange-500/10 text-orange-500 rounded-xl flex-shrink-0">
+                        <i data-lucide="cpu" class="w-4.5 h-4.5"></i>
+                    </div>
+                    <div class="space-y-1">
+                        <h5 class="text-sm font-bold text-title">iOS Device Support symbols</h5>
+                        <p class="text-xs text-body leading-relaxed">Safely clears symbolic metadata mapped from old hardware connections, complete with instant backup and restoration tools built in.</p>
+                    </div>
+                </div>
+                
+                <!-- Target Item 3 -->
+                <div class="reveal-kinetic p-5 panel-card border rounded-2xl flex items-start space-x-4 hover:translate-x-2 transition-transform duration-300">
+                    <div class="p-2.5 bg-pink-500/10 text-pink-500 rounded-xl flex-shrink-0">
+                        <i data-lucide="network" class="w-4.5 h-4.5"></i>
+                    </div>
+                    <div class="space-y-1">
+                        <h5 class="text-sm font-bold text-title">Multi-Platform Cache Catalogs</h5>
+                        <p class="text-xs text-body leading-relaxed">Direct support for clearing package folders including Flutter Pub Cache, Homebrew formula binaries, Carthage, CocoaPods databases, and Swift PM dependencies.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Architecture overview -->
+    <section id="architecture" class="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-20 border-t border-gray-500/10 relative z-10">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            
+            <div class="space-y-6 text-left">
+                <span class="text-xs font-bold text-blue-500 uppercase tracking-widest mono flex items-center space-x-1">
+                    <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
+                    <span>Architecture</span>
+                </span>
+                <h2 class="text-2xl md:text-3xl font-black tracking-tight text-title leading-tight">
+                    Natively Tied into macOS
+                </h2>
+                <p class="text-sm text-body leading-relaxed">
+                    Designed to be lightweight. DevShed operates directly on native Apple system frameworks and APIs to scan directories in milliseconds.
+                </p>
+                
+                <div class="grid grid-cols-2 gap-4 pt-2 text-xs text-body font-semibold">
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="check" class="w-4 h-4 text-green-500"></i>
+                        <span>SwiftUI Core Layout</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="check" class="w-4 h-4 text-green-500"></i>
+                        <span>AppKit API Bridging</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="check" class="w-4 h-4 text-green-500"></i>
+                        <span>Zero telemetry</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="check" class="w-4 h-4 text-green-500"></i>
+                        <span>Free & Ad-Free</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Beautiful framed static terminal code module -->
+            <div class="reveal-kinetic w-full overflow-hidden">
+                <div class="w-full bg-[#0C0C14] border border-white/5 rounded-2xl shadow-2xl p-4 sm:p-5 text-left font-mono text-[10px] sm:text-xs text-[#E4E4E6]">
+                    <div class="flex items-center justify-between mb-4 pb-2 border-b border-white/5">
+                        <div class="flex space-x-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#FF5F56] inline-block"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#FFBD2E] inline-block"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#27C93F] inline-block"></span>
+                        </div>
+                        <span class="text-[9px] text-gray-500 dark:text-gray-400 font-bold tracking-tight">devshed — CLI command line tools</span>
+                    </div>
+
+                    <div class="space-y-4 p-1">
+                        <div>
+                            <span class="text-green-400">~/Developer</span> <span class="text-blue-400">$</span> devshed status
+                        </div>
+                        <div class="text-gray-400 leading-relaxed text-[10px] sm:text-[11px]">
+                            Analyzing compiler registries... Done.<br>
+                            - DerivedData: <span class="text-blue-400">14.50 GB</span><br>
+                            - SimulatorLogs: <span class="text-orange-400">8.20 GB</span><br>
+                            - Xcode Caches: <span class="text-pink-400">4.10 GB</span><br>
+                            <span class="text-yellow-400 font-semibold">Total purgeable files: 26.80 GB waiting to clear.</span>
+                        </div>
+                        <div class="pt-2">
+                            <span class="text-green-400">~/Developer</span> <span class="text-blue-400">$</span> devshed clean
+                        </div>
+                        <div class="text-gray-400 leading-relaxed text-[10px] sm:text-[11px]">
+                            Terminating Xcode workspaces gracefully... Closed.<br>
+                            Clearing compiler caches securely... Done.<br>
+                            <span class="text-green-400">✔ Success: Cleared 26.80 GB of background cache files safely.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FAQ Accordion -->
+    <section id="faq" class="max-w-4xl mx-auto px-4 sm:px-6 py-12 md:py-20 border-t border-gray-500/10 relative z-10 animate-fade-in">
+        <div class="text-center max-w-2xl mx-auto mb-10">
+            <span class="text-xs font-bold text-blue-500 uppercase tracking-widest mono flex items-center justify-center space-x-1">
+                <i data-lucide="help-circle" class="w-3.5 h-3.5"></i>
+                <span>CLEARING CONFUSION</span>
+            </span>
+            <h2 class="text-2xl md:text-3xl font-black tracking-tight text-title mt-2">
+                Frequently Asked Questions
+            </h2>
+        </div>
+
+        <div class="space-y-4">
+            <!-- FAQ 1 -->
+            <div class="faq-wrapper border border-gray-500/10 rounded-xl bg-white/[0.01] hover:bg-white/[0.02] hover:border-gray-500/20 overflow-hidden">
+                <button class="faq-trigger w-full text-left px-5 py-4 flex items-center justify-between font-bold text-sm text-title focus:outline-none" aria-expanded="false">
+                    <span>Is DevShed safe to use? Will it delete my project source code?</span>
+                    <i data-lucide="chevron-down" class="chevron-icon w-4 h-4 text-gray-400 transform transition-transform duration-300"></i>
+                </button>
+                <div class="faq-content grid">
+                    <div class="faq-inner">
+                        <div class="px-5 pb-5 text-xs text-body leading-relaxed border-t border-gray-500/5 pt-3">
+                            Absolutely safe. DevShed never touches or views your personal source files or project workspaces. It targets only compiler cache output repositories, logs, intermediate object maps, and temporary simulators which macOS is engineered to dynamically regenerate on demand.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ 2 -->
+            <div class="faq-wrapper border border-gray-500/10 rounded-xl bg-white/[0.01] hover:bg-white/[0.02] hover:border-gray-500/20 overflow-hidden">
+                <button class="faq-trigger w-full text-left px-5 py-4 flex items-center justify-between font-bold text-sm text-title focus:outline-none" aria-expanded="false">
+                    <span>What is a "Ghost Cache" and why does it occur?</span>
+                    <i data-lucide="chevron-down" class="chevron-icon w-4 h-4 text-gray-400 transform transition-transform duration-300"></i>
+                </button>
+                <div class="faq-content grid">
+                    <div class="faq-inner">
+                        <div class="px-5 pb-5 text-xs text-body leading-relaxed border-t border-gray-500/5 pt-3">
+                            When you delete a folder containing an `.xcodeproj` or `.xcworkspace` file, Xcode continues to hold gigabytes of compilation index files inside your global `DerivedData` directory. DevShed tracks the original file references, recognizes that the host project folder no longer exists on disk, and classifies these abandoned assets as "Ghost Caches" so you can clean them with peace of mind.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ 3 -->
+            <div class="faq-wrapper border border-gray-500/10 rounded-xl bg-white/[0.01] hover:bg-white/[0.02] hover:border-gray-500/20 overflow-hidden">
+                <button class="faq-trigger w-full text-left px-5 py-4 flex items-center justify-between font-bold text-sm text-title focus:outline-none" aria-expanded="false">
+                    <span>How does the Swift SPM Protection mode work?</span>
+                    <i data-lucide="chevron-down" class="chevron-icon w-4 h-4 text-gray-400 transform transition-transform duration-300"></i>
+                </button>
+                <div class="faq-content grid">
+                    <div class="faq-inner">
+                        <div class="px-5 pb-5 text-xs text-body leading-relaxed border-t border-gray-500/5 pt-3">
+                            Wiping intermediate compile packages completely sometimes deletes the package manager cached dependency checkouts, meaning your next build requires a full re-download. When DevShed's SPM Protection is enabled, we surgically exclude directories containing dependency downloads so post-clean compilations remain blisteringly fast even offline.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ 4 -->
+            <div class="faq-wrapper border border-gray-500/10 rounded-xl bg-white/[0.01] hover:bg-white/[0.02] hover:border-gray-500/20 overflow-hidden">
+                <button class="faq-trigger w-full text-left px-5 py-4 flex items-center justify-between font-bold text-sm text-title focus:outline-none" aria-expanded="false">
+                    <span>Does DevShed collect telemetry or user analytics?</span>
+                    <i data-lucide="chevron-down" class="chevron-icon w-4 h-4 text-gray-400 transform transition-transform duration-300"></i>
+                </button>
+                <div class="faq-content grid">
+                    <div class="faq-inner">
+                        <div class="px-5 pb-5 text-xs text-body leading-relaxed border-t border-gray-500/5 pt-3">
+                            Zero. Absolutely none. We do not track what you wipe, what your projects are called, or even how many times you run the app. All path inspections and purges occur purely sandboxed on your local macOS workstation.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom Call To Action Block -->
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 py-12 relative z-10">
+        <div class="w-full rounded-3xl p-6 sm:p-12 text-center relative overflow-hidden bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-2xl">
+            <!-- Background detail decoration -->
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.08)_0%,transparent_50%)]"></div>
+            
+            <div class="relative z-10 max-w-2xl mx-auto space-y-6">
+                <!-- PREMIUM BOTTOM BADGE -->
+                <div class="inline-flex items-center space-x-1.5 bg-white/10 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                    <span>Coming Soon</span>
+                </div>
+                <h3 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
+                    Reclaim your gigabytes.
+                </h3>
+                <p class="text-sm text-blue-100 max-w-lg mx-auto leading-relaxed">
+                    Keep your macOS workflow running at peak performance. Sign up to get notified the second we release and lock in lifetime free updates.
+                </p>
+                <div class="pt-4 flex flex-col items-center justify-center">
+                    
+                    <!-- Configured Footer Interactive Subscription Form -->
+                    <form id="footer-signup-form" action="https://api.sheetmonkey.io/form/7REmn3wUQXDiupKFNo878j" method="POST" class="flex flex-col sm:flex-row items-stretch gap-2.5 w-full max-w-md">
+                        <!-- Sheet Monkey automatic date tracker metadata -->
+                        <input type="hidden" name="Created" value="x-sheetmonkey-current-date-time" />
+                        
+                        <input type="email" name="Email" required placeholder="Enter your email" class="px-4 py-3 rounded-xl bg-white/10 border border-white/20 focus:outline-none focus:border-white focus:ring-1 focus:ring-white text-white placeholder-blue-200 text-sm flex-grow transition-all duration-300">
+                        <button type="submit" class="bg-white text-blue-600 font-bold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 text-sm flex items-center justify-center space-x-2 flex-shrink-0">
+                            <i data-lucide="bell" class="w-4 h-4 text-blue-600"></i>
+                            <span>Get Early Access</span>
+                        </button>
+                    </form>
+                    <div id="footer-signup-success" class="hidden text-xs text-green-300 font-bold flex items-center space-x-1.5 mt-3 transition-all duration-300">
+                        <i data-lucide="check-circle" class="w-4 h-4"></i>
+                        <span>Awesome! We'll reach out very soon with early access.</span>
+                    </div>
+
+                </div>
+                <p class="text-[10px] text-blue-200 font-semibold mt-3">
+                    Supported on macOS Ventura, Sonoma, and Sequoia.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Area -->
+    <footer class="max-w-6xl mx-auto px-4 sm:px-6 pt-16 pb-12 border-t border-gray-500/10 text-xs text-gray-400 dark:text-gray-500 relative z-10">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div class="space-y-1.5">
+                <div class="flex items-center space-x-2">
+                    <div class="w-4 h-4 rounded-md overflow-hidden bg-blue-600/10 flex items-center justify-center">
+                        <!-- Graceful Logo fallback -->
+                        <img src="logo.png" alt="DevShed Mini Logo" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='https://placehold.co/32x32/007aff/ffffff?text=DS';">
+                    </div>
+                    <p class="font-bold text-title text-sm">DevShed</p>
+                </div>
+                <p>&copy; 2026 <a href="https://codearc.studio" class="text-blue-500 hover:underline">CodeArc Studio</a>. Released completely free.</p>
+            </div>
+            <p class="max-w-sm md:text-right leading-relaxed text-[11px]">
+                Xcode, macOS, and Mac are registered trademark properties owned by Apple Inc., located within the US and other global territories.
+            </p>
+        </div>
+    </footer>
+
+    <!-- System Setup Scripts -->
+    <script>
+        // IMMEDIATELY FORCE VIEWPORT RESET AND DISABLE BROWSER SCROLL POSITION RETENTION
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // Force primary reset
+            window.scrollTo(0, 0);
+
+            // Render Vector Icons
+            lucide.createIcons();
+
+            // Element entry scroll behaviors
+            const registry = document.querySelectorAll('.reveal-kinetic');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.01, rootMargin: "0px 0px -40px 0px" });
+
+            registry.forEach(element => observer.observe(element));
+
+            // Mobile Navigation Toggle
+            const toggleBtn = document.getElementById('mobile-menu-toggle');
+            const drawerMenu = document.getElementById('mobile-menu-drawer');
+            const menuIcon = document.getElementById('menu-icon');
+
+            if (toggleBtn && drawerMenu) {
+                toggleBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isHidden = drawerMenu.classList.contains('hidden');
+                    if (isHidden) {
+                        drawerMenu.classList.remove('hidden');
+                        menuIcon.setAttribute('data-lucide', 'x');
+                    } else {
+                        drawerMenu.classList.add('hidden');
+                        menuIcon.setAttribute('data-lucide', 'menu');
+                    }
+                    lucide.createIcons();
+                });
+
+                // Close menu if user clicks anywhere outside of it
+                document.addEventListener('click', (e) => {
+                    if (!drawerMenu.classList.contains('hidden') && !drawerMenu.contains(e.target) && !toggleBtn.contains(e.target)) {
+                        drawerMenu.classList.add('hidden');
+                        menuIcon.setAttribute('data-lucide', 'menu');
+                        lucide.createIcons();
+                    }
+                });
+
+                // Close mobile menu on clicking any navigation links
+                document.querySelectorAll('.mobile-nav-link').forEach(link => {
+                    link.addEventListener('click', () => {
+                        drawerMenu.classList.add('hidden');
+                        menuIcon.setAttribute('data-lucide', 'menu');
+                        lucide.createIcons();
+                    });
+                });
+            }
+
+            // Interactive Sheet Monkey submission handler using async AJAX Fetch
+            function setupNewsletterForm(formId, successId) {
+                const form = document.getElementById(formId);
+                const successDiv = document.getElementById(successId);
+                if (form && successDiv) {
+                    form.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        
+                        // Collect form data natively
+                        const formData = new FormData(form);
+                        
+                        // Fire background submission to Sheet Monkey API
+                        fetch(form.action, {
+                            method: form.method,
+                            body: formData
+                        })
+                        .then(() => {
+                            // Instantly swap form for success message layout on response
+                            form.classList.add('hidden');
+                            successDiv.classList.remove('hidden');
+                        })
+                        .catch((error) => {
+                            console.error('Error submitting email:', error);
+                            // Fallback: Still display success to safeguard user experience
+                            form.classList.add('hidden');
+                            successDiv.classList.remove('hidden');
+                        });
+                    });
+                }
+            }
+            setupNewsletterForm('hero-signup-form', 'hero-signup-success');
+            setupNewsletterForm('footer-signup-form', 'footer-signup-success');
+
+            // Storage Calculator State Engine
+            const sliderBuilds = document.getElementById('slider-builds');
+            const sliderSize = document.getElementById('slider-size');
+            const sliderBuildVal = document.getElementById('slider-build-val');
+            const sliderSizeVal = document.getElementById('slider-size-val');
+            
+            const calcEstSavings = document.getElementById('calc-est-savings');
+            const calcEstPercent = document.getElementById('calc-est-percent');
+            const calcEstLifespan = document.getElementById('calc-est-lifespan');
+
+            function updateCalculator() {
+                const buildLevel = parseInt(sliderBuilds.value); // 1 = light, 2 = moderate, 3 = heavy
+                const sizeLevel = parseInt(sliderSize.value);   // 1 = 256GB, 2 = 512GB, 3 = 1TB, 4 = 2TB
+
+                // Set descriptions
+                let levelText = "Moderate (Weekly)";
+                let baseReclaimedGB = 120; // default Moderate
+                if (buildLevel === 1) {
+                    levelText = "Light (Casual coding)";
+                    baseReclaimedGB = 30;
+                } else if (buildLevel === 3) {
+                    levelText = "Heavy (Daily coding)";
+                    baseReclaimedGB = 380;
+                }
+                sliderBuildVal.textContent = levelText;
+
+                let driveGB = 512;
+                if (sizeLevel === 1) {
+                    driveGB = 256;
+                } else if (sizeLevel === 3) {
+                    driveGB = 1000; // 1 TB
+                } else if (sizeLevel === 4) {
+                    driveGB = 2000; // 2 TB
+                }
+                sliderSizeVal.textContent = sizeLevel === 3 ? "1 TB" : (sizeLevel === 4 ? "2 TB" : `${driveGB} GB`);
+
+                // Calculations
+                const annualSaved = baseReclaimedGB;
+                const percentageOfDrive = Math.min(95, Math.round((annualSaved / driveGB) * 100));
+                
+                let lifespanRating = "Optimized";
+                if (percentageOfDrive > 60) {
+                    lifespanRating = "Critical Relief";
+                } else if (percentageOfDrive > 30) {
+                    lifespanRating = "High Impact";
+                } else {
+                    lifespanRating = "Healthy Space";
+                }
+
+                // Render outputs
+                calcEstSavings.textContent = `${annualSaved} GB`;
+                calcEstPercent.textContent = `${percentageOfDrive}%`;
+                calcEstLifespan.textContent = lifespanRating;
+            }
+
+            if (sliderBuilds && sliderSize) {
+                sliderBuilds.addEventListener('input', updateCalculator);
+                sliderSize.addEventListener('input', updateCalculator);
+                updateCalculator();
+            }
+
+            // Interactive FAQ Accordion Disclosures with Fluid Heights
+            document.querySelectorAll('.faq-trigger').forEach(trigger => {
+                trigger.addEventListener('click', () => {
+                    const faqBlock = trigger.parentElement;
+                    const content = faqBlock.querySelector('.faq-content');
+                    const icon = trigger.querySelector('.chevron-icon');
+                    const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+
+                    // Toggle current section
+                    trigger.setAttribute('aria-expanded', !isExpanded);
+                    if (isExpanded) {
+                        content.classList.remove('open');
+                        icon.classList.remove('rotate-180');
+                        faqBlock.classList.remove('border-blue-500/30', 'bg-white/[0.04]');
+                    } else {
+                        content.classList.add('open');
+                        icon.classList.add('rotate-180');
+                        faqBlock.classList.add('border-blue-500/30', 'bg-white/[0.04]');
+                    }
+                });
+            });
+        });
+
+        // FORCE RESET AND RESTORE SMOOTH SCROLL ONLY ONCE RENDERING CONCLUDES
+        window.addEventListener("load", () => {
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+                document.documentElement.classList.add('scroll-smooth');
+            }, 60);
+        });
+    </script>
+</body>
+</html>
