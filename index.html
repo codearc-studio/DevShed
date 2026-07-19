@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html lang="en" class="overflow-x-hidden">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X4Z5JP3LFY"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-X4Z5JP3LFY');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevShed — One-Click Xcode Storage Cleaner (Coming Soon)</title>
-    <meta name="description" content="Surgically reclaim storage wasted by Xcode. Clean Derived Data, Simulator Cache, Archives, and Multi-platform Packages securely. Releasing very soon!">
+    <title>DevShed — One-Click Xcode Storage Cleaner</title>
+    <meta name="description" content="Safely reclaim space wasted by Xcode build files, simulator caches, and old archives in one click. Available now for macOS.">
     
     <!-- Theme Colors for Browser Address and Tab Bars -->
     <meta name="theme-color" content="#060608" media="(prefers-color-scheme: dark)">
@@ -14,14 +24,14 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://devshed.codearc.studio/">
     <meta property="og:title" content="DevShed — One-Click Xcode Storage Cleaner">
-    <meta property="og:description" content="Surgically reclaim storage wasted by Xcode. Clean Derived Data, Simulator Cache, Archives, and Multi-platform Packages securely.">
+    <meta property="og:description" content="Safely reclaim space wasted by Xcode build files, simulator caches, and old archives in one click. Available now for macOS.">
     <meta property="og:image" content="https://devshed.codearc.studio/og-preview.png">
 
     <!-- Twitter / X Preview Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://devshed.codearc.studio/">
     <meta name="twitter:title" content="DevShed — One-Click Xcode Storage Cleaner">
-    <meta name="twitter:description" content="Surgically reclaim storage wasted by Xcode. Clean Derived Data, Simulator Cache, Archives, and Multi-platform Packages securely.">
+    <meta name="twitter:description" content="Safely reclaim space wasted by Xcode build files, simulator caches, and old archives.">
     <meta name="twitter:image" content="https://devshed.codearc.studio/og-preview.png">
 
     <!-- Local Favicon Fallback -->
@@ -97,7 +107,7 @@
             .glass-nav { background: rgba(6, 6, 8, 0.75) !important; border-color: rgba(255, 255, 255, 0.05) !important; }
             .mac-video-wrapper { background: rgba(10, 10, 12, 0.9); border-color: rgba(255, 255, 255, 0.08); box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7); }
             
-            /* Custom Scrollbars for Dark Mode configured with Dark Brand Colors */
+            /* Custom Scrollbars for Dark Mode */
             ::-webkit-scrollbar { width: 10px; }
             ::-webkit-scrollbar-track { background: #060608; }
             ::-webkit-scrollbar-thumb {
@@ -112,14 +122,6 @@
                 background: rgba(10, 132, 255, 0.15);
                 color: #0A84FF;
             }
-
-            /* Custom Focus Rings for Dark Mode input fields */
-            input:focus-visible {
-                outline: none;
-                border-color: #0A84FF !important;
-                box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.25);
-                transition: box-shadow 0.2s ease, border-color 0.2s ease;
-            }
         }
 
         @media (prefers-color-scheme: light) {
@@ -130,7 +132,7 @@
             .glass-nav { background: rgba(246, 246, 249, 0.8) !important; border-color: rgba(0, 0, 0, 0.05) !important; }
             .mac-video-wrapper { background: #ffffff; border-color: rgba(0, 0, 0, 0.08); box-shadow: 0 25px 50px -15px rgba(0, 0, 0, 0.1); }
             
-            /* Custom Scrollbars for Light Mode configured with Light Brand Colors */
+            /* Custom Scrollbars for Light Mode */
             ::-webkit-scrollbar { width: 10px; }
             ::-webkit-scrollbar-track { background: #f6f6f9; }
             ::-webkit-scrollbar-thumb {
@@ -144,14 +146,6 @@
             ::selection {
                 background: rgba(0, 122, 255, 0.15);
                 color: #007AFF;
-            }
-
-            /* Custom Focus Rings for Light Mode input fields */
-            input:focus-visible {
-                outline: none;
-                border-color: #007AFF !important;
-                box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.25);
-                transition: box-shadow 0.2s ease, border-color 0.2s ease;
             }
         }
         
@@ -223,17 +217,11 @@
                     <i data-lucide="help-circle" class="w-3.5 h-3.5"></i>
                     <span>FAQ</span>
                 </a>
-                <!-- Integrated Brand GitHub Link with explicitly white/adaptive SVG logo -->
-                <a href="https://github.com/codearc-studio/DevShed" target="_blank" rel="noopener noreferrer" class="text-gray-700 dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200 flex items-center space-x-1.5 border-l border-gray-500/20 pl-4" title="View Repository on GitHub">
-                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.137 20.162 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
-                    </svg>
-                    <span>GitHub</span>
-                </a>
-                <a href="#notify-section" class="bg-blue-600/10 text-blue-500 dark:text-blue-400 border border-blue-500/20 hover:bg-blue-600 hover:text-white px-3.5 py-1.5 rounded-lg font-bold shadow-sm transition-all duration-300 hover:scale-[1.03] active:scale-95 flex items-center space-x-1.5 flex-shrink-0">
-                    <i data-lucide="bell" class="w-3.5 h-3.5"></i>
-                    <span>Get Notified</span>
-                </a>
+                
+                <button onclick="triggerDownload()" class="bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-1.5 rounded-lg font-bold shadow-sm transition-all duration-300 hover:scale-[1.03] active:scale-95 flex items-center space-x-1.5 flex-shrink-0">
+                    <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                    <span>Download for macOS</span>
+                </button>
             </div>
 
             <!-- Mobile Drawer Button Toggle -->
@@ -260,65 +248,59 @@
                 <i data-lucide="help-circle" class="w-4 h-4"></i>
                 <span>FAQ</span>
             </a>
-            <!-- Mobile Drawer GitHub Link Integration -->
-            <a href="https://github.com/codearc-studio/DevShed" target="_blank" rel="noopener noreferrer" class="mobile-nav-link text-gray-700 dark:text-gray-200 hover:text-blue-500 text-sm font-semibold py-2.5 flex items-center space-x-2 border-b border-gray-500/5">
-                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.137 20.162 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
-                </svg>
-                <span>GitHub Repository</span>
-            </a>
-            <a href="#notify-section" class="bg-blue-600 hover:bg-blue-500 text-white w-full py-3 rounded-xl font-bold shadow-sm transition-all text-center flex items-center justify-center space-x-2 text-sm mt-2">
-                <i data-lucide="bell" class="w-4 h-4"></i>
-                <span>Get Notified on Release</span>
-            </a>
+            <button onclick="triggerDownload()" class="bg-blue-600 hover:bg-blue-500 text-white w-full py-3 rounded-xl font-bold shadow-sm transition-all text-center flex items-center justify-center space-x-2 text-sm mt-2">
+                <i data-lucide="download" class="w-4 h-4"></i>
+                <span>Download for macOS</span>
+            </button>
         </div>
     </nav>
 
     <!-- Hero Showcase Section -->
     <main class="max-w-6xl mx-auto px-4 sm:px-6 pt-24 md:pt-36 pb-12 md:pb-20 relative z-10">
+        <!-- Smart Device Alert Bar (shows on mobile browsers dynamically) -->
+        <div id="mobile-device-alert" class="hidden mb-8 p-4 bg-orange-500/10 border border-orange-500/20 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            <div class="flex items-center space-x-3 text-orange-600 dark:text-orange-400">
+                <i data-lucide="laptop" class="w-6 h-6 flex-shrink-0"></i>
+                <p class="text-xs font-semibold leading-relaxed">
+                    <strong>💻 Desktop Utility:</strong> DevShed is a macOS application. Please open this page on your Mac computer to install it.
+                </p>
+            </div>
+            <button onclick="triggerDownload()" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all flex-shrink-0">
+                Download Anyway
+            </button>
+        </div>
+
         <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             
             <div class="lg:col-span-5 space-y-6 md:space-y-8 text-left">
-                <!-- PREMIUM COMING SOON STATUS BADGE -->
-                <div class="reveal-kinetic active inline-flex items-center space-x-2 bg-blue-500/10 text-blue-600 dark:text-blue-400 px-3 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase mono">
-                    <i data-lucide="clock" class="w-3 h-3"></i>
-                    <span>Coming Soon</span>
-                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+                <!-- NATIVE MAC APP RELEASE STATUS BADGE -->
+                <div class="reveal-kinetic active inline-flex items-center space-x-2 bg-green-500/10 text-green-600 dark:text-green-400 px-3 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase mono">
+                    <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+                    <span>Version 1.0.0 Live</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
                 </div>
                 
                 <h1 class="reveal-kinetic active text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-title leading-[1.125] stroke-none" style="animation-delay: 50ms;">
-                    The cleanest way to <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-indigo-400 to-blue-600">manage Xcode storage.</span>
+                    Get your Mac's <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-indigo-400 to-blue-600">storage back.</span>
                 </h1>
                 
                 <p class="reveal-kinetic active text-sm text-body leading-relaxed max-w-lg" style="animation-delay: 100ms;">
-                    Xcode quietly hoards gigabytes of hidden build dependencies, compiler logs, and orphaned simulators. DevShed lets you surgically reclaim your disk space with a lightweight, native macOS menu bar interface.
+                    Xcode silently eats up gigabytes of your hard drive with hidden build directories, logs, and old simulator data. DevShed lets you clean them up safely and instantly with a simple, lightweight native app.
                 </p>
                 
-                <!-- New Sheet Monkey integrated Subscription Form -->
-                <div id="notify-section" class="reveal-kinetic active pt-2 space-y-3" style="animation-delay: 150ms;">
-                    <p class="text-xs font-bold text-title flex items-center space-x-1.5">
-                        <i data-lucide="mail" class="w-4 h-4 text-blue-500"></i>
-                        <span>Get notified immediately at launch:</span>
-                    </p>
-                    
-                    <form id="hero-signup-form" action="https://api.sheetmonkey.io/form/7REmn3wUQXDiupKFNo878j" method="POST" class="flex flex-col sm:flex-row items-stretch gap-2.5 max-w-md">
-                        <!-- Sheet Monkey automatic date tracker metadata -->
-                        <input type="hidden" name="Created" value="x-sheetmonkey-current-date-time" />
-                        
-                        <input type="email" name="Email" required placeholder="Enter your email address" class="px-4 py-3 rounded-xl bg-gray-500/5 dark:bg-white/5 border border-gray-500/15 focus:outline-none text-title text-sm flex-grow transition-all duration-300">
-                        <button type="submit" class="bg-gradient-to-b from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-3 rounded-xl font-bold shadow-md hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 text-sm flex items-center justify-center space-x-2 flex-shrink-0">
-                            <i data-lucide="bell" class="w-4 h-4"></i>
-                            <span>Notify Me</span>
+                <!-- Direct Universal Download Actions -->
+                <div class="reveal-kinetic active pt-2 space-y-4" style="animation-delay: 150ms;">
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 max-w-md">
+                        <button onclick="triggerDownload()" class="bg-gradient-to-b from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-7 py-3.5 rounded-xl font-bold shadow-md hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 text-sm flex items-center justify-center space-x-2">
+                            <i data-lucide="download" class="w-4 h-4"></i>
+                            <span>Download for macOS</span>
                         </button>
-                    </form>
-                    <div id="hero-signup-success" class="hidden text-xs text-green-500 font-bold flex items-center space-x-1.5 transition-all duration-300">
-                        <i data-lucide="check-circle" class="w-4 h-4"></i>
-                        <span>Awesome! We've added you to the launch list. No spam, ever.</span>
                     </div>
 
-                    <p class="text-[10px] text-gray-400 dark:text-gray-500">
-                        DevShed will be 100% free with zero tracking or telemetry.
-                    </p>
+                    <div class="flex items-center space-x-2 text-xs text-gray-400 dark:text-gray-500 mono">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-blue-500"></i>
+                        <span>Free Utility • Simple Cleanup • Universal Apple & Intel Support</span>
+                    </div>
                 </div>
             </div>
 
@@ -334,7 +316,7 @@
                         <!-- Overlay on hover to hint player control -->
                         <div class="absolute bottom-4 right-4 bg-black/60 backdrop-blur-md text-white rounded-lg p-2 flex items-center space-x-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none text-[10px] font-bold">
                             <i data-lucide="monitor-play" class="w-3.5 h-3.5 text-blue-400"></i>
-                            <span>Desktop App Preview</span>
+                            <span>Menu Bar App Preview</span>
                         </div>
                     </div>
                 </div>
@@ -342,6 +324,110 @@
 
         </div>
     </main>
+
+    <!-- Visual Impact Comparison Section -->
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 py-12 border-t border-gray-500/10 relative z-10">
+        <div class="text-center max-w-2xl mx-auto mb-10">
+            <h3 class="text-xl sm:text-2xl font-extrabold tracking-tight text-title">
+                Clean Up Wasted Space Instantly
+            </h3>
+            <p class="text-xs text-body mt-2">See how DevShed rescues your storage without interrupting your active projects.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Left Side: Cluttered -->
+            <div class="p-6 bg-red-500/[0.02] border border-red-500/10 rounded-3xl backdrop-blur-xl relative overflow-hidden">
+                <div class="absolute top-4 right-4 bg-red-500/10 text-red-500 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide flex items-center space-x-1">
+                    <i data-lucide="alert-triangle" class="w-3 h-3"></i>
+                    <span>Clogged Storage</span>
+                </div>
+                <h4 class="font-extrabold text-sm text-title mb-4">Xcode Hidden Waste</h4>
+                
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-xs text-body mb-1">
+                            <span>Derived Data build files</span>
+                            <span class="font-bold text-red-500 font-mono">42.8 GB</span>
+                        </div>
+                        <div class="w-full h-2 bg-gray-500/10 rounded-full overflow-hidden">
+                            <div class="h-full bg-red-500 rounded-full" style="width: 85%;"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs text-body mb-1">
+                            <span>Simulator logs & test data</span>
+                            <span class="font-bold text-red-500 font-mono">24.5 GB</span>
+                        </div>
+                        <div class="w-full h-2 bg-gray-500/10 rounded-full overflow-hidden">
+                            <div class="h-full bg-red-500 rounded-full" style="width: 65%;"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs text-body mb-1">
+                            <span>Old compiler caches</span>
+                            <span class="font-bold text-red-500 font-mono">15.2 GB</span>
+                        </div>
+                        <div class="w-full h-2 bg-gray-500/10 rounded-full overflow-hidden">
+                            <div class="h-full bg-red-500 rounded-full" style="width: 45%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-red-500/5 flex justify-between items-center">
+                    <span class="text-xs text-body">Total hidden clutter:</span>
+                    <span class="text-lg font-black text-red-500 font-mono">82.5 GB</span>
+                </div>
+            </div>
+
+            <!-- Right Side: Clean -->
+            <div class="p-6 bg-green-500/[0.02] border border-green-500/10 rounded-3xl backdrop-blur-xl relative overflow-hidden">
+                <div class="absolute top-4 right-4 bg-green-500/10 text-green-500 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide flex items-center space-x-1">
+                    <i data-lucide="check-circle" class="w-3 h-3"></i>
+                    <span>Optimized Mac</span>
+                </div>
+                <h4 class="font-extrabold text-sm text-title mb-4">After DevShed Cleanup</h4>
+                
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-xs text-body mb-1">
+                            <span>Derived Data build files</span>
+                            <span class="font-bold text-green-500 font-mono">0 GB (Reclaimed)</span>
+                        </div>
+                        <div class="w-full h-2 bg-gray-500/10 rounded-full overflow-hidden">
+                            <div class="h-full bg-green-500 rounded-full" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs text-body mb-1">
+                            <span>Simulator logs & test data</span>
+                            <span class="font-bold text-green-500 font-mono">0 GB (Reclaimed)</span>
+                        </div>
+                        <div class="w-full h-2 bg-gray-500/10 rounded-full overflow-hidden">
+                            <div class="h-full bg-green-500 rounded-full" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs text-body mb-1">
+                            <span>Old compiler caches</span>
+                            <span class="font-bold text-green-500 font-mono">0 GB (Reclaimed)</span>
+                        </div>
+                        <div class="w-full h-2 bg-gray-500/10 rounded-full overflow-hidden">
+                            <div class="h-full bg-green-500 rounded-full" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-green-500/5 flex justify-between items-center">
+                    <span class="text-xs text-body">Total rescued storage:</span>
+                    <span class="text-lg font-black text-green-500 font-mono">82.5 GB</span>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Space Calculator Section -->
     <section id="calculator" class="max-w-6xl mx-auto px-4 sm:px-6 py-12 border-t border-gray-500/10 relative z-10">
@@ -352,15 +438,15 @@
                     <span>Space Calculator</span>
                 </span>
                 <h3 class="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-title leading-tight">
-                    See How Much Space You Can Reclaim
+                    Check Your Cleanable Space
                 </h3>
                 <p class="text-sm text-body leading-relaxed">
-                    Xcode build folders and temporary testing profiles balloon in size silently. Use our calculator to discover how much wasted space you can easily prevent from filling up your Mac.
+                    Build folders balloon silently. Slide the indicators below to get an estimate of how much space DevShed will save your Mac's drive over a year of development.
                 </p>
                 <div class="p-4 bg-blue-500/5 rounded-xl border border-blue-500/10 flex items-start space-x-3">
                     <i data-lucide="heart" class="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5"></i>
                     <p class="text-[11px] text-body leading-relaxed">
-                        <strong>Mac Health Tip:</strong> Keeping at least 15% of your hard drive clear avoids system slowdowns and keeps macOS run times fast.
+                        <strong>Clean Drive Tip:</strong> Keeping at least 15% of your total drive free avoids write limitations and preserves your Mac's SSD lifespan.
                     </p>
                 </div>
             </div>
@@ -371,21 +457,21 @@
                     <!-- Slider 1 -->
                     <div class="space-y-2">
                         <div class="flex justify-between text-xs font-bold text-title">
-                            <span>How active is your development?</span>
+                            <span>How often do you write code?</span>
                             <span id="slider-build-val" class="text-blue-500 font-mono">Moderate (Weekly)</span>
                         </div>
                         <input id="slider-builds" type="range" min="1" max="3" value="2" class="w-full h-1.5 bg-gray-500/20 rounded-lg appearance-none cursor-pointer accent-blue-500">
                         <div class="flex justify-between text-[10px] text-body">
-                            <span>Light (Casual)</span>
-                            <span>Moderate</span>
-                            <span>Heavy (Daily)</span>
+                            <span>Casual</span>
+                            <span>Weekly</span>
+                            <span>Daily Heavy coding</span>
                         </div>
                     </div>
 
                     <!-- Slider 2 -->
                     <div class="space-y-2">
                         <div class="flex justify-between text-xs font-bold text-title">
-                            <span>Your Mac's total hard drive size?</span>
+                            <span>Mac Hard Drive Size</span>
                             <span id="slider-size-val" class="text-blue-500 font-mono">512 GB</span>
                         </div>
                         <input id="slider-size" type="range" min="1" max="4" value="2" class="w-full h-1.5 bg-gray-500/20 rounded-lg appearance-none cursor-pointer accent-blue-500">
@@ -400,26 +486,26 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-gray-500/10 pt-6">
                     <div class="bg-blue-500/5 border border-blue-500/10 p-4 rounded-xl">
-                        <span class="text-[10px] font-bold text-gray-400 block tracking-wide uppercase">Cleanable Space / Yr</span>
-                        <span id="calc-est-savings" class="text-xl sm:text-2xl font-black text-blue-500 block font-mono mt-1">240 GB</span>
-                        <span class="text-[9px] text-body block mt-1">of temporary files</span>
+                        <span class="text-[10px] font-bold text-gray-400 block tracking-wide uppercase">Est. Cleaned / Year</span>
+                        <span id="calc-est-savings" class="text-xl sm:text-2xl font-black text-blue-500 block font-mono mt-1">120 GB</span>
+                        <span class="text-[9px] text-body block mt-1">of temporary clutter</span>
                     </div>
                     <div class="bg-green-500/5 border border-green-500/10 p-4 rounded-xl">
                         <span class="text-[10px] font-bold text-gray-400 block tracking-wide uppercase">Drive Space Relieved</span>
-                        <span id="calc-est-percent" class="text-xl sm:text-2xl font-black text-green-500 block font-mono mt-1">47%</span>
-                        <span class="text-[9px] text-body block mt-1">of your total storage</span>
+                        <span id="calc-est-percent" class="text-xl sm:text-2xl font-black text-green-500 block font-mono mt-1">23%</span>
+                        <span class="text-[9px] text-body block mt-1">of total drive space</span>
                     </div>
                     <div class="bg-purple-500/5 border border-purple-500/10 p-4 rounded-xl sm:col-span-1 col-span-1">
                         <span class="text-[10px] font-bold text-gray-400 block tracking-wide uppercase">Lifespan Rating</span>
                         <span id="calc-est-lifespan" class="text-xl sm:text-2xl font-black text-purple-500 block font-mono mt-1">Highly Optimized</span>
-                        <span class="text-[9px] text-body block mt-1">preserved drive health</span>
+                        <span class="text-[9px] text-body block mt-1">preserved SSD health</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Surgical Cleanup Features Deep Dive -->
+    <!-- Cleanup Features Deep Dive -->
     <section id="features" class="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-20 border-t border-gray-500/10 relative z-10">
         <div class="max-w-3xl mb-12 md:mb-16">
             <span class="text-xs font-bold text-blue-500 uppercase tracking-widest mono flex items-center space-x-1">
@@ -427,10 +513,10 @@
                 <span>Features</span>
             </span>
             <h2 class="text-2xl md:text-3xl font-black tracking-tight text-title mt-2 mb-4">
-                Engineered for High-Performance Workspaces
+                Designed to Be Simple and Safe
             </h2>
             <p class="text-sm text-body leading-relaxed">
-                DevShed is more than a directory eraser. Written natively, it targets exact diagnostic registries, packages, and redundant virtual states to keep compile times low and free storage high.
+                DevShed safely handles complex storage sweeps in one click, without risking your critical source directories.
             </p>
         </div>
         
@@ -439,44 +525,44 @@
             <!-- Grid Feature 1 -->
             <div class="reveal-kinetic p-6 rounded-xl border border-gray-500/5 bg-gray-500/[0.01] hover:border-blue-500/30 hover:bg-blue-500/[0.02] hover:-translate-y-1 transition-all duration-300 group">
                 <div class="p-2.5 bg-blue-500/10 text-blue-500 w-10 h-10 rounded-lg flex items-center justify-center mb-4">
-                    <i data-lucide="ghost" class="w-5 h-5"></i>
+                    <i data-lucide="search" class="w-5 h-5"></i>
                 </div>
-                <h4 class="font-bold text-sm text-title mb-2 group-hover:text-blue-500 transition-colors">Ghost Cache Tracking</h4>
+                <h4 class="font-bold text-sm text-title mb-2 group-hover:text-blue-500 transition-colors">Find Hidden Cache</h4>
                 <p class="text-xs text-body leading-relaxed">
-                    Xcode stores huge builds even after you delete or relocate the workspace file. DevShed queries original file logs to spot these orphaned, heavy folders and flags them as <em>Ghost Caches</em> for painless deletion.
+                    Xcode stores huge builds even after you delete or move the project file. DevShed automatically flags these abandoned folders so you can delete them cleanly.
                 </p>
             </div>
 
             <!-- Grid Feature 2 -->
             <div class="reveal-kinetic p-6 rounded-xl border border-gray-500/5 bg-gray-500/[0.01] hover:border-purple-500/30 hover:bg-purple-500/[0.02] hover:-translate-y-1 transition-all duration-300 group" style="animation-delay: 40ms;">
                 <div class="p-2.5 bg-purple-500/10 text-purple-500 w-10 h-10 rounded-lg flex items-center justify-center mb-4">
-                    <i data-lucide="file-spreadsheet" class="w-5 h-5"></i>
+                    <i data-lucide="sliders" class="w-5 h-5"></i>
                 </div>
-                <h4 class="font-bold text-sm text-title mb-2 group-hover:text-purple-500 transition-colors">Interactive Purge Planner</h4>
+                <h4 class="font-bold text-sm text-title mb-2 group-hover:text-purple-500 transition-colors">Choose What to Clean</h4>
                 <p class="text-xs text-body leading-relaxed">
-                    Prevent accidental rebuild slowdowns. Use the built-in Interactive Purge Planner to inspect files, view sizes down to individual paths, and selectively exclude mission-critical targets prior to wiping.
+                    Prevent compile slowdowns. Use the interactive planner to inspect files, view sizes, and select only what you want to wipe.
                 </p>
             </div>
 
             <!-- Grid Feature 3 -->
             <div class="reveal-kinetic p-6 rounded-xl border border-gray-500/5 bg-gray-500/[0.01] hover:border-pink-500/30 hover:bg-pink-500/[0.02] hover:-translate-y-1 transition-all duration-300 group" style="animation-delay: 80ms;">
                 <div class="p-2.5 bg-pink-500/10 text-pink-500 w-10 h-10 rounded-lg flex items-center justify-center mb-4">
-                    <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                    <i data-lucide="shield" class="w-5 h-5"></i>
                 </div>
-                <h4 class="font-bold text-sm text-title mb-2 group-hover:text-pink-500 transition-colors">Execution Safe Mode</h4>
+                <h4 class="font-bold text-sm text-title mb-2 group-hover:text-pink-500 transition-colors">Safe Cleaning</h4>
                 <p class="text-xs text-body leading-relaxed">
-                    Avoid index corruption. When active, Safe Mode prompts you to save current project files and automatically closes running Xcode processes gently before launching any deletion routine.
+                    DevShed asks you to save open projects and closes Xcode automatically before starting a cleaning cycle, keeping your work secure.
                 </p>
             </div>
 
             <!-- Grid Feature 4 -->
             <div class="reveal-kinetic p-6 rounded-xl border border-gray-500/5 bg-gray-500/[0.01] hover:border-green-500/30 hover:bg-green-500/[0.02] hover:-translate-y-1 transition-all duration-300 group">
                 <div class="p-2.5 bg-green-500/10 text-green-500 w-10 h-10 rounded-lg flex items-center justify-center mb-4">
-                    <i data-lucide="search-code" class="w-5 h-5"></i>
+                    <i data-lucide="folder" class="w-5 h-5"></i>
                 </div>
-                <h4 class="font-bold text-sm text-title mb-2 group-hover:text-green-500 transition-colors">Node Modules Watcher</h4>
+                <h4 class="font-bold text-sm text-title mb-2 group-hover:text-green-500 transition-colors">Project Folder Scanner</h4>
                 <p class="text-xs text-body leading-relaxed">
-                    Add custom developer roots. Locate, catalog, and clean out heavy, nested local `node_modules` folders hidden deep inside neglected directories or expired project archives.
+                    Monitor external work folders to track down massive and obsolete dependencies that clutter your storage.
                 </p>
             </div>
 
@@ -485,20 +571,20 @@
                 <div class="p-2.5 bg-orange-500/10 text-orange-500 w-10 h-10 rounded-lg flex items-center justify-center mb-4">
                     <i data-lucide="smartphone" class="w-5 h-5"></i>
                 </div>
-                <h4 class="font-bold text-sm text-title mb-2 group-hover:text-orange-500 transition-colors">Simulator Device Tracker</h4>
+                <h4 class="font-bold text-sm text-title mb-2 group-hover:text-orange-500 transition-colors">Simulator Cleanup</h4>
                 <p class="text-xs text-body leading-relaxed">
-                    Review simulated active targets directly. Safely clear device runtime containers, clean stale log states, and erase legacy iOS simulator versions abandoned by Apple system revisions.
+                    Safely clear heavy simulator system files and caches generated during testing to free up local disk space.
                 </p>
             </div>
 
             <!-- Grid Feature 6 -->
             <div class="reveal-kinetic p-6 rounded-xl border border-gray-500/5 bg-gray-500/[0.01] hover:border-cyan-500/30 hover:bg-cyan-500/[0.02] hover:-translate-y-1 transition-all duration-300 group" style="animation-delay: 80ms;">
                 <div class="p-2.5 bg-cyan-500/10 text-cyan-500 w-10 h-10 rounded-lg flex items-center justify-center mb-4">
-                    <i data-lucide="activity" class="w-5 h-5"></i>
+                    <i data-lucide="bell" class="w-5 h-5"></i>
                 </div>
-                <h4 class="font-bold text-sm text-title mb-2 group-hover:text-cyan-500 transition-colors">Active Auto Pilot</h4>
+                <h4 class="font-bold text-sm text-title mb-2 group-hover:text-cyan-500 transition-colors">Smart Alerts</h4>
                 <p class="text-xs text-body leading-relaxed">
-                    Unattended storage maintenance. Set your optimal threshold limits, and let DevShed safely wipe expired caching repositories dynamically in the background without disturbing active flows.
+                    Set a storage warning threshold. Let DevShed alert you when hidden Xcode caches get too large, so your drive stays clean.
                 </p>
             </div>
 
@@ -514,15 +600,15 @@
                     <span>Purge Targets</span>
                 </span>
                 <h3 class="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-title leading-tight">
-                    Multi-Platform & Native Support
+                    Clean Everything Safely
                 </h3>
                 <p class="text-sm text-body leading-relaxed">
-                    Xcode generates different types of caching. DevShed maps out all developer cache directories natively—giving you full transparency of what can be cleaned.
+                    Xcode hoards storage across multiple folders. DevShed organizes these areas cleanly, allowing you to choose exactly what to clear.
                 </p>
                 <div class="p-4 bg-blue-500/5 rounded-xl border border-blue-500/10 flex items-start space-x-3">
                     <i data-lucide="info" class="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5"></i>
                     <p class="text-xs text-body leading-relaxed">
-                        <strong>Swift SPM Cache Protection:</strong> Excludes core SPM artifact registries by default to preserve compiler indexes and save internet bandwidth on your next build.
+                        <strong>Package Cache Protection:</strong> Excludes core registries by default to save network bandwidth and avoid slow re-downloads on your next project load.
                     </p>
                 </div>
             </div>
@@ -535,7 +621,7 @@
                     </div>
                     <div class="space-y-1">
                         <h5 class="text-sm font-bold text-title">Derived Data & Archives</h5>
-                        <p class="text-xs text-body leading-relaxed">Clears intermediate compilations, module maps, debug configurations, and redundant App Store release archives securely.</p>
+                        <p class="text-xs text-body leading-relaxed">Removes build directories, intermediate compilation folders, logs, and expired local release archives.</p>
                     </div>
                 </div>
                 
@@ -545,8 +631,8 @@
                         <i data-lucide="cpu" class="w-4.5 h-4.5"></i>
                     </div>
                     <div class="space-y-1">
-                        <h5 class="text-sm font-bold text-title">iOS Device Support symbols</h5>
-                        <p class="text-xs text-body leading-relaxed">Safely clears symbolic metadata mapped from old hardware connections, complete with instant backup and restoration tools built in.</p>
+                        <h5 class="text-sm font-bold text-title">Simulator Logs & Caches</h5>
+                        <p class="text-xs text-body leading-relaxed">Safely discards heavy testing diagnostic reports, console log files, and obsolete simulator device support data.</p>
                     </div>
                 </div>
                 
@@ -556,85 +642,11 @@
                         <i data-lucide="network" class="w-4.5 h-4.5"></i>
                     </div>
                     <div class="space-y-1">
-                        <h5 class="text-sm font-bold text-title">Multi-Platform Cache Catalogs</h5>
-                        <p class="text-xs text-body leading-relaxed">Direct support for clearing package folders including Flutter Pub Cache, Homebrew formula binaries, Carthage, CocoaPods databases, and Swift PM dependencies.</p>
+                        <h5 class="text-sm font-bold text-title">Multi-Platform Package Cache</h5>
+                        <p class="text-xs text-body leading-relaxed">Direct support to clean nested package folders like Flutter Pub, CocoaPods local files, Swift Package Manager, and Carthage.</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Technical Architecture overview -->
-    <section id="architecture" class="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-20 border-t border-gray-500/10 relative z-10">
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
-            
-            <div class="space-y-6 text-left">
-                <span class="text-xs font-bold text-blue-500 uppercase tracking-widest mono flex items-center space-x-1">
-                    <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
-                    <span>Architecture</span>
-                </span>
-                <h2 class="text-2xl md:text-3xl font-black tracking-tight text-title leading-tight">
-                    Natively Tied into macOS
-                </h2>
-                <p class="text-sm text-body leading-relaxed">
-                    Designed to be lightweight. DevShed operates directly on native Apple system frameworks and APIs to scan directories in milliseconds.
-                </p>
-                
-                <div class="grid grid-cols-2 gap-4 pt-2 text-xs text-body font-semibold">
-                    <div class="flex items-center space-x-2">
-                        <i data-lucide="check" class="w-4 h-4 text-green-500"></i>
-                        <span>SwiftUI Core Layout</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <i data-lucide="check" class="w-4 h-4 text-green-500"></i>
-                        <span>AppKit API Bridging</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <i data-lucide="check" class="w-4 h-4 text-green-500"></i>
-                        <span>Zero telemetry</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <i data-lucide="check" class="w-4 h-4 text-green-500"></i>
-                        <span>Free & Ad-Free</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Beautiful framed static terminal code module -->
-            <div class="reveal-kinetic w-full overflow-hidden">
-                <div class="w-full bg-[#0C0C14] border border-white/5 rounded-2xl shadow-2xl p-4 sm:p-5 text-left font-mono text-[10px] sm:text-xs text-[#E4E4E6]">
-                    <div class="flex items-center justify-between mb-4 pb-2 border-b border-white/5">
-                        <div class="flex space-x-1.5">
-                            <span class="w-2.5 h-2.5 rounded-full bg-[#FF5F56] inline-block"></span>
-                            <span class="w-2.5 h-2.5 rounded-full bg-[#FFBD2E] inline-block"></span>
-                            <span class="w-2.5 h-2.5 rounded-full bg-[#27C93F] inline-block"></span>
-                        </div>
-                        <span class="text-[9px] text-gray-500 dark:text-gray-400 font-bold tracking-tight">devshed — CLI command line tools</span>
-                    </div>
-
-                    <div class="space-y-4 p-1">
-                        <div>
-                            <span class="text-green-400">~/Developer</span> <span class="text-blue-400">$</span> devshed status
-                        </div>
-                        <div class="text-gray-400 leading-relaxed text-[10px] sm:text-[11px]">
-                            Analyzing compiler registries... Done.<br>
-                            - DerivedData: <span class="text-blue-400">14.50 GB</span><br>
-                            - SimulatorLogs: <span class="text-orange-400">8.20 GB</span><br>
-                            - Xcode Caches: <span class="text-pink-400">4.10 GB</span><br>
-                            <span class="text-yellow-400 font-semibold">Total purgeable files: 26.80 GB waiting to clear.</span>
-                        </div>
-                        <div class="pt-2">
-                            <span class="text-green-400">~/Developer</span> <span class="text-blue-400">$</span> devshed clean
-                        </div>
-                        <div class="text-gray-400 leading-relaxed text-[10px] sm:text-[11px]">
-                            Terminating Xcode workspaces gracefully... Closed.<br>
-                            Clearing compiler caches securely... Done.<br>
-                            <span class="text-green-400">✔ Success: Cleared 26.80 GB of background cache files safely.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </section>
 
@@ -643,7 +655,7 @@
         <div class="text-center max-w-2xl mx-auto mb-10">
             <span class="text-xs font-bold text-blue-500 uppercase tracking-widest mono flex items-center justify-center space-x-1">
                 <i data-lucide="help-circle" class="w-3.5 h-3.5"></i>
-                <span>CLEARING CONFUSION</span>
+                <span>FAQ</span>
             </span>
             <h2 class="text-2xl md:text-3xl font-black tracking-tight text-title mt-2">
                 Frequently Asked Questions
@@ -654,13 +666,13 @@
             <!-- FAQ 1 -->
             <div class="faq-wrapper border border-gray-500/10 rounded-xl bg-white/[0.01] hover:bg-white/[0.02] hover:border-gray-500/20 overflow-hidden">
                 <button class="faq-trigger w-full text-left px-5 py-4 flex items-center justify-between font-bold text-sm text-title focus:outline-none" aria-expanded="false">
-                    <span>Is DevShed safe to use? Will it delete my project source code?</span>
+                    <span>Is DevShed safe to use? Will it delete my project files?</span>
                     <i data-lucide="chevron-down" class="chevron-icon w-4 h-4 text-gray-400 transform transition-transform duration-300"></i>
                 </button>
                 <div class="faq-content grid">
                     <div class="faq-inner">
                         <div class="px-5 pb-5 text-xs text-body leading-relaxed border-t border-gray-500/5 pt-3">
-                            Absolutely safe. DevShed never touches or views your personal source files or project workspaces. It targets only compiler cache output repositories, logs, intermediate object maps, and temporary simulators which macOS is engineered to dynamically regenerate on demand.
+                            Absolutely safe. DevShed never touches or deletes your actual source code or assets. It only clears out compiler cache, logs, and simulator directories that macOS automatically recreates when you build or test your app again.
                         </div>
                     </div>
                 </div>
@@ -669,13 +681,13 @@
             <!-- FAQ 2 -->
             <div class="faq-wrapper border border-gray-500/10 rounded-xl bg-white/[0.01] hover:bg-white/[0.02] hover:border-gray-500/20 overflow-hidden">
                 <button class="faq-trigger w-full text-left px-5 py-4 flex items-center justify-between font-bold text-sm text-title focus:outline-none" aria-expanded="false">
-                    <span>What is a "Ghost Cache" and why does it occur?</span>
+                    <span>What is a "Ghost Cache"?</span>
                     <i data-lucide="chevron-down" class="chevron-icon w-4 h-4 text-gray-400 transform transition-transform duration-300"></i>
                 </button>
                 <div class="faq-content grid">
                     <div class="faq-inner">
                         <div class="px-5 pb-5 text-xs text-body leading-relaxed border-t border-gray-500/5 pt-3">
-                            When you delete a folder containing an `.xcodeproj` or `.xcworkspace` file, Xcode continues to hold gigabytes of compilation index files inside your global `DerivedData` directory. DevShed tracks the original file references, recognizes that the host project folder no longer exists on disk, and classifies these abandoned assets as "Ghost Caches" so you can clean them with peace of mind.
+                            When you delete an old project folder, Xcode often keeps gigabytes of index files behind inside your Library path. DevShed detects these abandoned directories that no longer correspond to a project on your drive, classifying them as Ghost Caches so you can clean them up.
                         </div>
                     </div>
                 </div>
@@ -684,28 +696,13 @@
             <!-- FAQ 3 -->
             <div class="faq-wrapper border border-gray-500/10 rounded-xl bg-white/[0.01] hover:bg-white/[0.02] hover:border-gray-500/20 overflow-hidden">
                 <button class="faq-trigger w-full text-left px-5 py-4 flex items-center justify-between font-bold text-sm text-title focus:outline-none" aria-expanded="false">
-                    <span>How does the Swift SPM Protection mode work?</span>
+                    <span>Does DevShed collect my data?</span>
                     <i data-lucide="chevron-down" class="chevron-icon w-4 h-4 text-gray-400 transform transition-transform duration-300"></i>
                 </button>
                 <div class="faq-content grid">
                     <div class="faq-inner">
                         <div class="px-5 pb-5 text-xs text-body leading-relaxed border-t border-gray-500/5 pt-3">
-                            Wiping intermediate compile packages completely sometimes deletes the package manager cached dependency checkouts, meaning your next build requires a full re-download. When DevShed's SPM Protection is enabled, we surgically exclude directories containing dependency downloads so post-clean compilations remain blisteringly fast even offline.
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- FAQ 4 -->
-            <div class="faq-wrapper border border-gray-500/10 rounded-xl bg-white/[0.01] hover:bg-white/[0.02] hover:border-gray-500/20 overflow-hidden">
-                <button class="faq-trigger w-full text-left px-5 py-4 flex items-center justify-between font-bold text-sm text-title focus:outline-none" aria-expanded="false">
-                    <span>Does DevShed collect telemetry or user analytics?</span>
-                    <i data-lucide="chevron-down" class="chevron-icon w-4 h-4 text-gray-400 transform transition-transform duration-300"></i>
-                </button>
-                <div class="faq-content grid">
-                    <div class="faq-inner">
-                        <div class="px-5 pb-5 text-xs text-body leading-relaxed border-t border-gray-500/5 pt-3">
-                            Zero. Absolutely none. We do not track what you wipe, what your projects are called, or even how many times you run the app. All path inspections and purges occur purely sandboxed on your local macOS workstation.
+                            Zero. We do not run background telemetry, metrics, or usage analysis. All file scans and deletions happen entirely inside your local macOS system environment.
                         </div>
                     </div>
                 </div>
@@ -722,35 +719,22 @@
             <div class="relative z-10 max-w-2xl mx-auto space-y-6">
                 <!-- PREMIUM BOTTOM BADGE -->
                 <div class="inline-flex items-center space-x-1.5 bg-white/10 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
-                    <span>Coming Soon</span>
+                    <span>macOS App</span>
                 </div>
                 <h3 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
                     Reclaim your gigabytes.
                 </h3>
                 <p class="text-sm text-blue-100 max-w-lg mx-auto leading-relaxed">
-                    Keep your macOS workflow running at peak performance. Sign up to get notified the second we release and lock in lifetime free updates.
+                    Keep your Mac clean and fast. Download DevShed to gain control over bloated system caches.
                 </p>
-                <div class="pt-4 flex flex-col items-center justify-center">
-                    
-                    <!-- Configured Footer Interactive Subscription Form -->
-                    <form id="footer-signup-form" action="https://api.sheetmonkey.io/form/7REmn3wUQXDiupKFNo878j" method="POST" class="flex flex-col sm:flex-row items-stretch gap-2.5 w-full max-w-md">
-                        <!-- Sheet Monkey automatic date tracker metadata -->
-                        <input type="hidden" name="Created" value="x-sheetmonkey-current-date-time" />
-                        
-                        <input type="email" name="Email" required placeholder="Enter your email" class="px-4 py-3 rounded-xl bg-white/10 border border-white/20 focus:outline-none focus:border-white focus:ring-1 focus:ring-white text-white placeholder-blue-200 text-sm flex-grow transition-all duration-300">
-                        <button type="submit" class="bg-white text-blue-600 font-bold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 text-sm flex items-center justify-center space-x-2 flex-shrink-0">
-                            <i data-lucide="bell" class="w-4 h-4 text-blue-600"></i>
-                            <span>Get Early Access</span>
-                        </button>
-                    </form>
-                    <div id="footer-signup-success" class="hidden text-xs text-green-300 font-bold flex items-center space-x-1.5 mt-3 transition-all duration-300">
-                        <i data-lucide="check-circle" class="w-4 h-4"></i>
-                        <span>Awesome! We'll reach out very soon with early access.</span>
-                    </div>
-
+                <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button onclick="triggerDownload()" class="bg-white text-blue-600 hover:bg-blue-55 font-bold px-7 py-4 rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 text-sm flex items-center justify-center space-x-2">
+                        <i data-lucide="download" class="w-4 h-4 text-blue-600"></i>
+                        <span>Download for macOS</span>
+                    </button>
                 </div>
                 <p class="text-[10px] text-blue-200 font-semibold mt-3">
-                    Supported on macOS Ventura, Sonoma, and Sequoia.
+                    Requires macOS 14+
                 </p>
             </div>
         </div>
@@ -762,28 +746,80 @@
             <div class="space-y-1.5">
                 <div class="flex items-center space-x-2">
                     <div class="w-4 h-4 rounded-md overflow-hidden bg-blue-600/10 flex items-center justify-center">
-                        <!-- Graceful Logo fallback -->
                         <img src="logo.png" alt="DevShed Mini Logo" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='https://placehold.co/32x32/007aff/ffffff?text=DS';">
                     </div>
                     <p class="font-bold text-title text-sm">DevShed</p>
                 </div>
                 <p>&copy; 2026 <a href="https://codearc.studio" class="text-blue-500 hover:underline">CodeArc Studio</a>. Released completely free.</p>
-                
-                <!-- Footer GitHub Quicklink -->
-                <div class="pt-2 flex items-center space-x-3">
-                    <a href="https://github.com/codearc-studio/DevShed" target="_blank" rel="noopener noreferrer" class="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200 flex items-center space-x-1.5">
-                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.137 20.162 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
-                        </svg>
-                        <span>Source on GitHub</span>
-                    </a>
-                </div>
             </div>
             <p class="max-w-sm md:text-right leading-relaxed text-[11px]">
-                Xcode, macOS, and Mac are registered trademark properties owned by Apple Inc., located within the US and other global territories.
+                Xcode, macOS, and Mac are registered trademark properties owned by Apple Inc.
             </p>
         </div>
     </footer>
+
+    <!-- INTERACTIVE DOWNLOADING INSTRUCTIONS MODAL -->
+    <div id="download-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#060608]/80 backdrop-blur-sm hidden transition-opacity duration-300 opacity-0">
+        <div class="relative w-full max-w-md p-6 bg-white dark:bg-[#0F0F14] border border-gray-500/15 rounded-3xl shadow-2xl transform transition-transform duration-300 scale-95 flex flex-col space-y-5">
+            <button onclick="closeDownloadModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            
+            <div class="flex items-center space-x-3.5 pb-2">
+                <div class="p-3 bg-blue-500/10 text-blue-500 rounded-2xl">
+                    <i data-lucide="download" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h4 class="font-extrabold text-base text-title">Downloading DevShed</h4>
+                    <p class="text-xs text-body">Follow these quick steps to launch the app.</p>
+                </div>
+            </div>
+
+            <hr class="border-gray-500/10">
+
+            <div class="space-y-4">
+                <!-- Step 1 -->
+                <div class="flex items-start space-x-3">
+                    <div class="w-5 h-5 bg-blue-600 text-white rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5 flex-shrink-0">1</div>
+                    <div class="space-y-0.5">
+                        <h5 class="text-xs font-bold text-title">Mount the Disk Image</h5>
+                        <p class="text-[11px] text-body leading-relaxed">Once the download finishes, open the downloaded <span class="mono bg-gray-500/10 dark:bg-white/5 px-1 py-0.5 rounded">DevShed.dmg</span> package.</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="flex items-start space-x-3">
+                    <div class="w-5 h-5 bg-blue-600 text-white rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5 flex-shrink-0">2</div>
+                    <div class="space-y-0.5">
+                        <h5 class="text-xs font-bold text-title">Install to Applications</h5>
+                        <p class="text-[11px] text-body leading-relaxed">Drag <span class="font-bold text-blue-500">DevShed.app</span> into your macOS <span class="font-bold">Applications</span> directory inside the installer window.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="flex items-start space-x-3">
+                    <div class="w-5 h-5 bg-blue-600 text-white rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5 flex-shrink-0">3</div>
+                    <div class="space-y-0.5">
+                        <h5 class="text-xs font-bold text-title">Open App</h5>
+                        <p class="text-[11px] text-body leading-relaxed">Launch the utility! You will see the package icon appear inside your native system menu bar immediately.</p>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="border-gray-500/10">
+
+            <div class="bg-blue-500/5 border border-blue-500/10 rounded-2xl p-3 flex items-start space-x-2.5">
+                <i data-lucide="info" class="w-4.5 h-4.5 text-blue-500 flex-shrink-0 mt-0.5"></i>
+                <p class="text-[10px] text-body leading-relaxed">
+                    <strong>Universal Support:</strong> Runs natively on Apple Silicon (M1, M2, M3, M4 series) and Intel Macs.
+                </p>
+            </div>
+
+            <button onclick="closeDownloadModal()" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl text-xs font-bold transition-all shadow-md">
+                Got It, Thanks!
+            </button>
+        </div>
+    </div>
 
     <!-- System Setup Scripts -->
     <script>
@@ -793,12 +829,61 @@
         }
         window.scrollTo(0, 0);
 
+        // Download Action Simulation & Native DMG Target Trigger
+        function triggerDownload() {
+            // Direct build link referencing your recently hosted DMG package
+            const downloadUrl = "https://github.com/codearc-studio/DevShed/releases/download/v1.0/DevShed.dmg";
+            
+            // Open user modal installation instructions
+            const modal = document.getElementById('download-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modal.querySelector('.relative').classList.remove('scale-95');
+                }, 10);
+            }
+            
+            // Initiate actual browser download download sequence safely via iframe redirection
+            const hiddenFrame = document.createElement('iframe');
+            hiddenFrame.style.display = 'none';
+            hiddenFrame.src = downloadUrl;
+            document.body.appendChild(hiddenFrame);
+            
+            // Cleanup frame after small safety delay
+            setTimeout(() => {
+                document.body.removeChild(hiddenFrame);
+            }, 5000);
+        }
+
+        function closeDownloadModal() {
+            const modal = document.getElementById('download-modal');
+            if (modal) {
+                modal.classList.add('opacity-0');
+                modal.querySelector('.relative').classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300);
+            }
+        }
+
         document.addEventListener("DOMContentLoaded", () => {
             // Force primary reset
             window.scrollTo(0, 0);
 
             // Render Vector Icons
             lucide.createIcons();
+
+            // Mobile/Tablet device check to show warning banner
+            const isMac = /Macintosh|MacIntel|MacPPC|Mac68K/.test(navigator.userAgent);
+            const isMobileOrTablet = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 1024;
+            
+            if (!isMac || isMobileOrTablet) {
+                const mobileAlert = document.getElementById('mobile-device-alert');
+                if (mobileAlert) {
+                    mobileAlert.classList.remove('hidden');
+                }
+            }
 
             // Element entry scroll behaviors
             const registry = document.querySelectorAll('.reveal-kinetic');
@@ -850,39 +935,6 @@
                 });
             }
 
-            // Interactive Sheet Monkey submission handler using async AJAX Fetch
-            function setupNewsletterForm(formId, successId) {
-                const form = document.getElementById(formId);
-                const successDiv = document.getElementById(successId);
-                if (form && successDiv) {
-                    form.addEventListener('submit', (e) => {
-                        e.preventDefault();
-                        
-                        // Collect form data natively
-                        const formData = new FormData(form);
-                        
-                        // Fire background submission to Sheet Monkey API
-                        fetch(form.action, {
-                            method: form.method,
-                            body: formData
-                        })
-                        .then(() => {
-                            // Instantly swap form for success message layout on response
-                            form.classList.add('hidden');
-                            successDiv.classList.remove('hidden');
-                        })
-                        .catch((error) => {
-                            console.error('Error submitting email:', error);
-                            // Fallback: Still display success to safeguard user experience
-                            form.classList.add('hidden');
-                            successDiv.classList.remove('hidden');
-                        });
-                    });
-                }
-            }
-            setupNewsletterForm('hero-signup-form', 'hero-signup-success');
-            setupNewsletterForm('footer-signup-form', 'footer-signup-success');
-
             // Storage Calculator State Engine
             const sliderBuilds = document.getElementById('slider-builds');
             const sliderSize = document.getElementById('slider-size');
@@ -901,10 +953,10 @@
                 let levelText = "Moderate (Weekly)";
                 let baseReclaimedGB = 120; // default Moderate
                 if (buildLevel === 1) {
-                    levelText = "Light (Casual coding)";
+                    levelText = "Casual Coding";
                     baseReclaimedGB = 30;
                 } else if (buildLevel === 3) {
-                    levelText = "Heavy (Daily coding)";
+                    levelText = "Daily Heavy Coding";
                     baseReclaimedGB = 380;
                 }
                 sliderBuildVal.textContent = levelText;
