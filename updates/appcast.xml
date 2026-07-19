@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+    <channel>
+        <title>DevShed</title>
+        <item>
+            <title>1.0</title>
+            <pubDate>Sat, 18 Jul 2026 23:03:20 -0400</pubDate>
+            <sparkle:version>1</sparkle:version>
+            <sparkle:shortVersionString>1.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/codearc-studio/DevShed/releases/download/v1.0/DevShed.dmg" length="3492221" type="application/x-apple-diskimage"></enclosure>
+        </item>
+    </channel>
+</rss>
