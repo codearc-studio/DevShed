@@ -64,7 +64,7 @@ DevShed is currently in early access. Sign up for immediate notification at laun
 ## Frequently Asked Questions
 
 #### Is this safe? Will it delete my source code?
-Absolutely. DevShed never views, indexes, or touches your personal source code repositories or project files. It exclusively targets volatile cache layers, system logs, and temporary virtual environments that macOS and Xcode are engineered to automatically regenerate on your next compilation step.
+Absolutely safe. DevShed never views, indexes, or touches your personal source code repositories or project files. It exclusively targets volatile cache layers, system logs, and temporary virtual environments that macOS and Xcode are engineered to automatically regenerate on your next compilation step.
 
 #### What makes it faster than a script?
 DevShed is built directly on native Swift, AppKit, and SwiftUI APIs. Instead of executing slow sequential shell deep-finds, it interfaces directly with file system APIs to query directory state sizes instantly.
