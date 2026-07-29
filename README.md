@@ -2,77 +2,59 @@
 
 <img src="banner.png" alt="DevShed Banner" width="100%" />
 
-A lightweight, high-performance native macOS menu bar application and CLI tool engineered to surgically reclaim gigabytes of disk space hoarded by Xcode, simulators, and package managers.
+DevShed is a native macOS menu bar utility for finding and clearing Xcode-related storage that builds up over time. It scans selected developer folders locally, shows how much space they use, and lets you clean individual categories or run a standard cleanup.
 
-DevShed maps out developer cache directories natively using Apple system frameworks, scanning directories in milliseconds without interfering with active build pipelines.
+Download DevShed at [devshed.codearc.studio](https://devshed.codearc.studio).
 
-DevShed operates 100% locally on your workstation. It features zero tracking, zero telemetry, and zero ads.
+## What it does
 
----
+- Shows the space used by common Xcode storage locations.
+- Cleans individual categories or a standard set of Xcode caches.
+- Shows a per-project Derived Data breakdown, so you can review what is taking space before deleting it.
+- Lets you inspect and remove unavailable simulator devices, and erase an individual simulator when needed.
+- Can exclude Swift Package Manager-related cache paths from Xcode cache cleanup.
+- Includes optional notifications, cleanup reminders, custom folders, and a command-line tool.
 
-## Key Features
+DevShed does not scan your source repositories as part of its standard cleanup. If you add a custom folder, you choose that folder and remain responsible for its contents.
 
-* **Ghost Cache Tracking:** Xcode leaves behind heavy compilation index files inside DerivedData long after you delete or relocate an .xcodeproj or .xcworkspace. DevShed flags these abandoned assets for safe deletion.
-* **Execution Safe Mode:** Prevents index corruption. DevShed prompts you to save open files and gracefully closes running Xcode processes before firing a deletion routine.
-* **Swift SPM Protection:** Surgically excludes core Swift Package Manager registries by default to preserve compiler indexes and save internet bandwidth on subsequent builds.
-* **Multi-Platform Cache Catalogs:** Native support for clearing heavy developer caching roots, including Flutter Pub Cache, Homebrew binaries, Carthage, CocoaPods, and deep nested node_modules.
-* **Simulator Device Tracker:** Clears stale log states, device runtime containers, and legacy iOS/watchOS/tvOS simulator versions abandoned by Apple system updates.
+## Safety controls
 
----
+- Review storage by category before you clean.
+- Open the selected folder in Finder from DevShed when you want to inspect it first.
+- Enable **Quit Xcode before cleaning** in Settings if you want DevShed to request that Xcode closes before deletion begins.
+- Swift Package Manager-related paths inside the Xcode cache are excluded by default. You can change this in Settings.
 
-## CLI Usage
+Cleaning removes cache files and simulator data. Xcode or macOS may recreate some of these files during later builds or simulator use.
 
-DevShed bundles a lightweight command-line tool for developers who prefer the terminal or want to script their maintenance routines.
+## Command-line tool
+
+DevShed can install an optional `devshed` command from **Settings → CLI Tool**. Open a new Terminal window after installation, then use:
 
 ```bash
-~/Developer $ devshed status
-Analyzing compiler registries... Done.
-- DerivedData: 14.50 GB
-- SimulatorLogs: 8.20 GB
-- Xcode Caches: 4.10 GB
-Total purgeable files: 26.80 GB waiting to clear.
-
-~/Developer $ devshed clean
-Terminating Xcode workspaces gracefully... Closed.
-Clearing compiler caches securely... Done.
-✔ Success: Cleared 26.80 GB of background cache files safely.
+devshed status
+devshed clean
 ```
 
----
+`devshed status` reports the amount of storage currently marked as cleanable. `devshed clean` requests the app to run its standard cleanup. The app must be installed and running for the command-line tool to communicate with it.
 
-## What We Clean (And Protect)
+## Requirements
 
-| Target Directory | What DevShed Does | Protection Mechanism |
-| :--- | :--- | :--- |
-| DerivedData & Archives | Clears intermediate objects, module maps, and stale debug builds. | Safely purges without breaking structural paths. |
-| SPM Caches | Keeps project mapping records intact. | SPM Protection prevents re-downloading dependency frameworks. |
-| Simulator Runtimes | Wipes orphan hardware connection logs and expired iOS profiles. | Restores global defaults automatically. |
-| Package Registries | Audits local node_modules, Flutter, and Homebrew caches. | Interactive Planner lets you selectively exclude active directories. |
+- macOS 14 or later
+- Apple silicon or Intel Mac
 
----
+## Installation
 
-## Requirements and Installation
+1. Download the latest `DevShed.dmg` from [devshed.codearc.studio](https://devshed.codearc.studio).
+2. Open the disk image.
+3. Drag `DevShed.app` to your Applications folder.
+4. Open DevShed and use its menu bar icon to scan your Xcode storage.
 
-* **System Support:** macOS 13 (Ventura), macOS 14 (Sonoma), or macOS 15 (Sequoia).
-* **Architecture:** Native Apple Silicon (M1/M2/M3/M4) and Intel Core architectures.
+## Privacy
 
-### Download
-DevShed is currently in early access. Sign up for immediate notification at launch over at https://devshed.codearc.studio
+DevShed performs scans and cleanup on your Mac. It does not use third-party analytics or advertising services.
 
----
+## License and trademarks
 
-## Frequently Asked Questions
+DevShed is developed by CodeArc Studio and is available free of charge.
 
-#### Is this safe? Will it delete my source code?
-Absolutely safe. DevShed never views, indexes, or touches your personal source code repositories or project files. It exclusively targets volatile cache layers, system logs, and temporary virtual environments that macOS and Xcode are engineered to automatically regenerate on your next compilation step.
-
-#### What makes it faster than a script?
-DevShed is built directly on native Swift, AppKit, and SwiftUI APIs. Instead of executing slow sequential shell deep-finds, it interfaces directly with file system APIs to query directory state sizes instantly.
-
----
-
-## License and Legal
-
-Developed by CodeArc Studio. Released completely free to the developer community.
-
-Xcode, macOS, and Mac are registered trademarks of Apple Inc., registered in the U.S. and other countries.
+Xcode, macOS, and Mac are trademarks of Apple Inc.
