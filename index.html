@@ -64,6 +64,31 @@
             50% { transform: translateY(-6px); }
         }
 
+        @keyframes gridDrift {
+            from { background-position: 0 0, 0 0; }
+            to { background-position: 36px 36px, 36px 36px; }
+        }
+
+        @keyframes shimmerSweep {
+            0% { transform: translateX(-135%) skewX(-18deg); }
+            100% { transform: translateX(230%) skewX(-18deg); }
+        }
+
+        @keyframes softPulse {
+            0%, 100% { opacity: .4; transform: scale(.96); }
+            50% { opacity: .9; transform: scale(1.04); }
+        }
+
+        @keyframes heroFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-9px); }
+        }
+
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
         .ambient-glow {
             position: absolute;
             width: 300px;
@@ -151,6 +176,82 @@
         
         body { font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; width: 100%; }
         .mono { font-family: 'JetBrains Mono', monospace; }
+        .grid-overlay {
+            position: absolute;
+            inset: 0;
+            opacity: .28;
+            background-image: linear-gradient(rgba(120, 155, 255, .055) 1px, transparent 1px), linear-gradient(90deg, rgba(120, 155, 255, .055) 1px, transparent 1px);
+            background-size: 36px 36px;
+            mask-image: linear-gradient(to bottom, black, transparent 74%);
+            -webkit-mask-image: linear-gradient(to bottom, black, transparent 74%);
+            animation: gridDrift 18s linear infinite;
+        }
+        .nav-scrolled { box-shadow: 0 12px 35px -22px rgba(0, 0, 0, .65); }
+        .nav-link { position: relative; }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -7px;
+            height: 1.5px;
+            border-radius: 999px;
+            background: #0A84FF;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform .28s cubic-bezier(.16, 1, .3, 1);
+        }
+        .nav-link:hover::after { transform: scaleX(1); transform-origin: left; }
+        .utility-chip { transition: transform .3s cubic-bezier(.16, 1, .3, 1), background-color .3s ease, border-color .3s ease; }
+        .utility-chip:hover { transform: translateY(-3px); }
+        .spotlight-card { position: relative; overflow: hidden; }
+        .spotlight-card::before {
+            content: '';
+            position: absolute;
+            width: 230px;
+            height: 230px;
+            left: var(--spotlight-x, 50%);
+            top: var(--spotlight-y, 50%);
+            transform: translate(-50%, -50%);
+            border-radius: 999px;
+            background: radial-gradient(circle, rgba(10, 132, 255, .12), transparent 66%);
+            opacity: 0;
+            transition: opacity .35s ease;
+            pointer-events: none;
+        }
+        .spotlight-card:hover::before { opacity: 1; }
+        .scan-line { animation: softPulse 3s ease-in-out infinite; }
+        .hero-preview { animation: heroFloat 7s ease-in-out infinite; }
+        .hero-gradient { background-size: 200% auto; animation: gradientFlow 6s ease-in-out infinite; }
+        input[type="range"] {
+            appearance: none;
+            -webkit-appearance: none;
+            height: 7px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #0A84FF, #5E5CE6);
+            transition: filter .2s ease, box-shadow .2s ease;
+        }
+        input[type="range"]:hover, input[type="range"]:focus-visible { filter: brightness(1.12); box-shadow: 0 0 0 5px rgba(10, 132, 255, .12); outline: none; }
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            background: #0A84FF;
+            box-shadow: 0 2px 8px rgba(0, 95, 190, .35);
+            transition: transform .18s cubic-bezier(.16, 1, .3, 1), box-shadow .18s ease;
+        }
+        input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.16); box-shadow: 0 3px 14px rgba(10, 132, 255, .48); }
+        .range-labels { position: relative; height: 1rem; }
+        .range-labels span { position: absolute; white-space: nowrap; transform: translateX(-50%); }
+        .range-labels .range-start { left: 0; transform: none; }
+        .range-labels .range-end { right: 0; transform: none; }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+        }
 
         .panel-card {
             backdrop-filter: blur(25px);
@@ -182,12 +283,14 @@
 
     <!-- Background glow objects wrapper clipped securely within device boundary -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="grid-overlay"></div>
         <div class="absolute top-10 left-[12%] ambient-glow"></div>
         <div class="absolute top-[35%] right-[8%] ambient-glow" style="animation-delay: -6s; background: radial-gradient(circle, rgba(99, 102, 241, 0.05) 0%, transparent 65%);"></div>
     </div>
 
     <!-- Header Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-50 glass-nav backdrop-blur-md border-b transition-all duration-300">
+    <nav id="site-nav" class="fixed top-0 left-0 right-0 z-50 glass-nav backdrop-blur-md border-b transition-all duration-300">
+        <div id="scroll-progress" class="absolute bottom-0 left-0 h-px bg-gradient-to-r from-blue-400 via-cyan-300 to-indigo-400 transition-[width] duration-100" style="width: 0%"></div>
         <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex justify-between items-center">
             <a href="#" class="flex items-center space-x-2.5 group flex-shrink-0">
                 <div class="w-6 h-6 rounded-lg overflow-hidden flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300 bg-blue-600/10">
@@ -201,27 +304,13 @@
             
             <!-- Desktop Nav Links -->
             <div class="hidden md:flex items-center space-x-6 text-xs font-semibold">
-                <a href="#calculator" class="text-gray-500 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200 flex items-center space-x-1">
-                    <i data-lucide="calculator" class="w-3.5 h-3.5"></i>
-                    <span>Space Calculator</span>
-                </a>
-                <a href="#features" class="text-gray-500 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200 flex items-center space-x-1">
-                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-                    <span>Features</span>
-                </a>
-                <a href="#targets" class="text-gray-500 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200 flex items-center space-x-1">
-                    <i data-lucide="target" class="w-3.5 h-3.5"></i>
-                    <span>What We Clean</span>
-                </a>
-                <a href="#faq" class="text-gray-500 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200 flex items-center space-x-1">
-                    <i data-lucide="help-circle" class="w-3.5 h-3.5"></i>
-                    <span>FAQ</span>
-                </a>
+                <a href="#calculator" class="nav-link text-gray-500 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200">Calculator</a>
+                <a href="#features" class="nav-link text-gray-500 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200">Features</a>
+                <a href="#targets" class="nav-link text-gray-500 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200">What We Clean</a>
+                <a href="#reviews" class="nav-link text-gray-500 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200">Reviews</a>
+                <a href="#faq" class="nav-link text-gray-500 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200">FAQ</a>
                 
-                <button onclick="triggerDownload()" class="bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-1.5 rounded-lg font-bold shadow-sm transition-all duration-300 hover:scale-[1.03] active:scale-95 flex items-center space-x-1.5 flex-shrink-0">
-                    <i data-lucide="download" class="w-3.5 h-3.5"></i>
-                    <span>Download for macOS</span>
-                </button>
+                <button onclick="triggerDownload()" class="bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-1.5 rounded-lg font-bold shadow-sm transition-all duration-300 hover:scale-[1.03] active:scale-95 flex-shrink-0">Download for macOS</button>
             </div>
 
             <!-- Mobile Drawer Button Toggle -->
@@ -232,22 +321,11 @@
         
         <!-- Mobile Drawer Menu Overlay -->
         <div id="mobile-menu-drawer" class="hidden md:hidden absolute top-14 left-0 w-full glass-nav border-b border-gray-500/10 backdrop-blur-lg flex flex-col p-6 space-y-4 shadow-xl z-40 transition-all duration-300">
-            <a href="#calculator" class="mobile-nav-link text-gray-500 dark:text-gray-300 hover:text-blue-500 text-sm font-semibold py-2.5 flex items-center space-x-2 border-b border-gray-500/5">
-                <i data-lucide="calculator" class="w-4 h-4"></i>
-                <span>Space Calculator</span>
-            </a>
-            <a href="#features" class="mobile-nav-link text-gray-500 dark:text-gray-300 hover:text-blue-500 text-sm font-semibold py-2.5 flex items-center space-x-2 border-b border-gray-500/5">
-                <i data-lucide="sparkles" class="w-4 h-4"></i>
-                <span>Features</span>
-            </a>
-            <a href="#targets" class="mobile-nav-link text-gray-500 dark:text-gray-300 hover:text-blue-500 text-sm font-semibold py-2.5 flex items-center space-x-2 border-b border-gray-500/5">
-                <i data-lucide="target" class="w-4 h-4"></i>
-                <span>What We Clean</span>
-            </a>
-            <a href="#faq" class="mobile-nav-link text-gray-500 dark:text-gray-300 hover:text-blue-500 text-sm font-semibold py-2.5 flex items-center space-x-2 border-b border-gray-500/5">
-                <i data-lucide="help-circle" class="w-4 h-4"></i>
-                <span>FAQ</span>
-            </a>
+            <a href="#calculator" class="mobile-nav-link text-gray-500 dark:text-gray-300 hover:text-blue-500 text-sm font-semibold py-2.5 border-b border-gray-500/5">Calculator</a>
+            <a href="#features" class="mobile-nav-link text-gray-500 dark:text-gray-300 hover:text-blue-500 text-sm font-semibold py-2.5 border-b border-gray-500/5">Features</a>
+            <a href="#targets" class="mobile-nav-link text-gray-500 dark:text-gray-300 hover:text-blue-500 text-sm font-semibold py-2.5 border-b border-gray-500/5">What We Clean</a>
+            <a href="#reviews" class="mobile-nav-link text-gray-500 dark:text-gray-300 hover:text-blue-500 text-sm font-semibold py-2.5 border-b border-gray-500/5">Reviews</a>
+            <a href="#faq" class="mobile-nav-link text-gray-500 dark:text-gray-300 hover:text-blue-500 text-sm font-semibold py-2.5 border-b border-gray-500/5">FAQ</a>
             <button onclick="triggerDownload()" class="bg-blue-600 hover:bg-blue-500 text-white w-full py-3 rounded-xl font-bold shadow-sm transition-all text-center flex items-center justify-center space-x-2 text-sm mt-2">
                 <i data-lucide="download" class="w-4 h-4"></i>
                 <span>Download for macOS</span>
@@ -273,15 +351,8 @@
         <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             
             <div class="lg:col-span-5 space-y-6 md:space-y-8 text-left">
-                <!-- NATIVE MAC APP RELEASE STATUS BADGE -->
-                <div class="reveal-kinetic active inline-flex items-center space-x-2 bg-green-500/10 text-green-600 dark:text-green-400 px-3 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase mono">
-                    <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
-                    <span>Version 1.0.0 Live</span>
-                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                </div>
-                
                 <h1 class="reveal-kinetic active text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-title leading-[1.125] stroke-none" style="animation-delay: 50ms;">
-                    Get your Mac's <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-indigo-400 to-blue-600">storage back.</span>
+                    Get your Mac's <span class="hero-gradient bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-indigo-400 to-blue-600">storage back.</span>
                 </h1>
                 
                 <p class="reveal-kinetic active text-sm text-body leading-relaxed max-w-lg" style="animation-delay: 100ms;">
@@ -301,12 +372,17 @@
                         <i data-lucide="sparkles" class="w-3.5 h-3.5 text-blue-500"></i>
                         <span>Free Utility • Simple Cleanup • Universal Apple & Intel Support</span>
                     </div>
+                    <div class="flex flex-wrap gap-2 pt-1" aria-label="DevShed benefits">
+                        <span class="utility-chip inline-flex items-center gap-1.5 rounded-full border border-blue-500/15 bg-blue-500/[0.05] px-3 py-1.5 text-[10px] font-bold text-body"><i data-lucide="shield-check" class="w-3.5 h-3.5 text-blue-500"></i> Preview before cleanup</span>
+                        <span class="utility-chip inline-flex items-center gap-1.5 rounded-full border border-green-500/15 bg-green-500/[0.05] px-3 py-1.5 text-[10px] font-bold text-body"><i data-lucide="zap" class="w-3.5 h-3.5 text-green-500"></i> Reclaim in seconds</span>
+                    </div>
                 </div>
             </div>
 
             <!-- Beautiful macOS framed app demo video player -->
             <div class="lg:col-span-7 reveal-kinetic active w-full" style="animation-delay: 200ms;">
-                <div class="mac-video-wrapper rounded-xl border overflow-hidden relative group">
+                <div class="hero-preview mac-video-wrapper rounded-2xl border overflow-hidden relative group ring-1 ring-white/5">
+                    <div class="absolute inset-x-0 top-0 z-10 h-px bg-gradient-to-r from-transparent via-blue-300/70 to-transparent scan-line"></div>
                     <div class="relative w-full aspect-[1660/1080] overflow-hidden bg-black/40">
                         <video id="demo-player" class="w-full h-full object-cover" autoplay loop muted playsinline>
                             <source src="demo.mp4" type="video/mp4">
@@ -324,110 +400,6 @@
 
         </div>
     </main>
-
-    <!-- Visual Impact Comparison Section -->
-    <section class="max-w-6xl mx-auto px-4 sm:px-6 py-12 border-t border-gray-500/10 relative z-10">
-        <div class="text-center max-w-2xl mx-auto mb-10">
-            <h3 class="text-xl sm:text-2xl font-extrabold tracking-tight text-title">
-                Clean Up Wasted Space Instantly
-            </h3>
-            <p class="text-xs text-body mt-2">See how DevShed rescues your storage without interrupting your active projects.</p>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-8">
-            <!-- Left Side: Cluttered -->
-            <div class="p-6 bg-red-500/[0.02] border border-red-500/10 rounded-3xl backdrop-blur-xl relative overflow-hidden">
-                <div class="absolute top-4 right-4 bg-red-500/10 text-red-500 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide flex items-center space-x-1">
-                    <i data-lucide="alert-triangle" class="w-3 h-3"></i>
-                    <span>Clogged Storage</span>
-                </div>
-                <h4 class="font-extrabold text-sm text-title mb-4">Xcode Hidden Waste</h4>
-                
-                <div class="space-y-4">
-                    <div>
-                        <div class="flex justify-between text-xs text-body mb-1">
-                            <span>Derived Data build files</span>
-                            <span class="font-bold text-red-500 font-mono">42.8 GB</span>
-                        </div>
-                        <div class="w-full h-2 bg-gray-500/10 rounded-full overflow-hidden">
-                            <div class="h-full bg-red-500 rounded-full" style="width: 85%;"></div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div class="flex justify-between text-xs text-body mb-1">
-                            <span>Simulator logs & test data</span>
-                            <span class="font-bold text-red-500 font-mono">24.5 GB</span>
-                        </div>
-                        <div class="w-full h-2 bg-gray-500/10 rounded-full overflow-hidden">
-                            <div class="h-full bg-red-500 rounded-full" style="width: 65%;"></div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div class="flex justify-between text-xs text-body mb-1">
-                            <span>Old compiler caches</span>
-                            <span class="font-bold text-red-500 font-mono">15.2 GB</span>
-                        </div>
-                        <div class="w-full h-2 bg-gray-500/10 rounded-full overflow-hidden">
-                            <div class="h-full bg-red-500 rounded-full" style="width: 45%;"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-6 pt-4 border-t border-red-500/5 flex justify-between items-center">
-                    <span class="text-xs text-body">Total hidden clutter:</span>
-                    <span class="text-lg font-black text-red-500 font-mono">82.5 GB</span>
-                </div>
-            </div>
-
-            <!-- Right Side: Clean -->
-            <div class="p-6 bg-green-500/[0.02] border border-green-500/10 rounded-3xl backdrop-blur-xl relative overflow-hidden">
-                <div class="absolute top-4 right-4 bg-green-500/10 text-green-500 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide flex items-center space-x-1">
-                    <i data-lucide="check-circle" class="w-3 h-3"></i>
-                    <span>Optimized Mac</span>
-                </div>
-                <h4 class="font-extrabold text-sm text-title mb-4">After DevShed Cleanup</h4>
-                
-                <div class="space-y-4">
-                    <div>
-                        <div class="flex justify-between text-xs text-body mb-1">
-                            <span>Derived Data build files</span>
-                            <span class="font-bold text-green-500 font-mono">0 GB (Reclaimed)</span>
-                        </div>
-                        <div class="w-full h-2 bg-gray-500/10 rounded-full overflow-hidden">
-                            <div class="h-full bg-green-500 rounded-full" style="width: 0%;"></div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div class="flex justify-between text-xs text-body mb-1">
-                            <span>Simulator logs & test data</span>
-                            <span class="font-bold text-green-500 font-mono">0 GB (Reclaimed)</span>
-                        </div>
-                        <div class="w-full h-2 bg-gray-500/10 rounded-full overflow-hidden">
-                            <div class="h-full bg-green-500 rounded-full" style="width: 0%;"></div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div class="flex justify-between text-xs text-body mb-1">
-                            <span>Old compiler caches</span>
-                            <span class="font-bold text-green-500 font-mono">0 GB (Reclaimed)</span>
-                        </div>
-                        <div class="w-full h-2 bg-gray-500/10 rounded-full overflow-hidden">
-                            <div class="h-full bg-green-500 rounded-full" style="width: 0%;"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-6 pt-4 border-t border-green-500/5 flex justify-between items-center">
-                    <span class="text-xs text-body">Total rescued storage:</span>
-                    <span class="text-lg font-black text-green-500 font-mono">82.5 GB</span>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Space Calculator Section -->
     <section id="calculator" class="max-w-6xl mx-auto px-4 sm:px-6 py-12 border-t border-gray-500/10 relative z-10">
@@ -460,11 +432,11 @@
                             <span>How often do you write code?</span>
                             <span id="slider-build-val" class="text-blue-500 font-mono">Moderate (Weekly)</span>
                         </div>
-                        <input id="slider-builds" type="range" min="1" max="3" value="2" class="w-full h-1.5 bg-gray-500/20 rounded-lg appearance-none cursor-pointer accent-blue-500">
-                        <div class="flex justify-between text-[10px] text-body">
-                            <span>Casual</span>
-                            <span>Weekly</span>
-                            <span>Daily Heavy coding</span>
+                        <input id="slider-builds" type="range" min="1" max="3" value="2" class="w-full cursor-pointer">
+                        <div class="range-labels text-[10px] text-body">
+                            <span class="range-start">Casual</span>
+                            <span style="left: 50%;">Weekly</span>
+                            <span class="range-end">Daily heavy coding</span>
                         </div>
                     </div>
 
@@ -474,12 +446,12 @@
                             <span>Mac Hard Drive Size</span>
                             <span id="slider-size-val" class="text-blue-500 font-mono">512 GB</span>
                         </div>
-                        <input id="slider-size" type="range" min="1" max="4" value="2" class="w-full h-1.5 bg-gray-500/20 rounded-lg appearance-none cursor-pointer accent-blue-500">
-                        <div class="flex justify-between text-[10px] text-body">
-                            <span>256 GB</span>
-                            <span>512 GB</span>
-                            <span>1 TB</span>
-                            <span>2 TB+</span>
+                        <input id="slider-size" type="range" min="1" max="4" value="2" class="w-full cursor-pointer">
+                        <div class="range-labels text-[10px] text-body">
+                            <span class="range-start">256 GB</span>
+                            <span style="left: 33.333%;">512 GB</span>
+                            <span style="left: 66.667%;">1 TB</span>
+                            <span class="range-end">2 TB+</span>
                         </div>
                     </div>
                 </div>
@@ -523,7 +495,7 @@
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             
             <!-- Grid Feature 1 -->
-            <div class="reveal-kinetic p-6 rounded-xl border border-gray-500/5 bg-gray-500/[0.01] hover:border-blue-500/30 hover:bg-blue-500/[0.02] hover:-translate-y-1 transition-all duration-300 group">
+            <div class="reveal-kinetic spotlight-card p-6 rounded-xl border border-gray-500/5 bg-gray-500/[0.01] hover:border-blue-500/30 hover:bg-blue-500/[0.02] hover:-translate-y-1 transition-all duration-300 group">
                 <div class="p-2.5 bg-blue-500/10 text-blue-500 w-10 h-10 rounded-lg flex items-center justify-center mb-4">
                     <i data-lucide="search" class="w-5 h-5"></i>
                 </div>
@@ -534,7 +506,7 @@
             </div>
 
             <!-- Grid Feature 2 -->
-            <div class="reveal-kinetic p-6 rounded-xl border border-gray-500/5 bg-gray-500/[0.01] hover:border-purple-500/30 hover:bg-purple-500/[0.02] hover:-translate-y-1 transition-all duration-300 group" style="animation-delay: 40ms;">
+            <div class="reveal-kinetic spotlight-card p-6 rounded-xl border border-gray-500/5 bg-gray-500/[0.01] hover:border-purple-500/30 hover:bg-purple-500/[0.02] hover:-translate-y-1 transition-all duration-300 group" style="animation-delay: 40ms;">
                 <div class="p-2.5 bg-purple-500/10 text-purple-500 w-10 h-10 rounded-lg flex items-center justify-center mb-4">
                     <i data-lucide="sliders" class="w-5 h-5"></i>
                 </div>
@@ -545,7 +517,7 @@
             </div>
 
             <!-- Grid Feature 3 -->
-            <div class="reveal-kinetic p-6 rounded-xl border border-gray-500/5 bg-gray-500/[0.01] hover:border-pink-500/30 hover:bg-pink-500/[0.02] hover:-translate-y-1 transition-all duration-300 group" style="animation-delay: 80ms;">
+            <div class="reveal-kinetic spotlight-card p-6 rounded-xl border border-gray-500/5 bg-gray-500/[0.01] hover:border-pink-500/30 hover:bg-pink-500/[0.02] hover:-translate-y-1 transition-all duration-300 group" style="animation-delay: 80ms;">
                 <div class="p-2.5 bg-pink-500/10 text-pink-500 w-10 h-10 rounded-lg flex items-center justify-center mb-4">
                     <i data-lucide="shield" class="w-5 h-5"></i>
                 </div>
@@ -556,7 +528,7 @@
             </div>
 
             <!-- Grid Feature 4 -->
-            <div class="reveal-kinetic p-6 rounded-xl border border-gray-500/5 bg-gray-500/[0.01] hover:border-green-500/30 hover:bg-green-500/[0.02] hover:-translate-y-1 transition-all duration-300 group">
+            <div class="reveal-kinetic spotlight-card p-6 rounded-xl border border-gray-500/5 bg-gray-500/[0.01] hover:border-green-500/30 hover:bg-green-500/[0.02] hover:-translate-y-1 transition-all duration-300 group">
                 <div class="p-2.5 bg-green-500/10 text-green-500 w-10 h-10 rounded-lg flex items-center justify-center mb-4">
                     <i data-lucide="folder" class="w-5 h-5"></i>
                 </div>
@@ -567,7 +539,7 @@
             </div>
 
             <!-- Grid Feature 5 -->
-            <div class="reveal-kinetic p-6 rounded-xl border border-gray-500/5 bg-gray-500/[0.01] hover:border-orange-500/30 hover:bg-orange-500/[0.02] hover:-translate-y-1 transition-all duration-300 group" style="animation-delay: 40ms;">
+            <div class="reveal-kinetic spotlight-card p-6 rounded-xl border border-gray-500/5 bg-gray-500/[0.01] hover:border-orange-500/30 hover:bg-orange-500/[0.02] hover:-translate-y-1 transition-all duration-300 group" style="animation-delay: 40ms;">
                 <div class="p-2.5 bg-orange-500/10 text-orange-500 w-10 h-10 rounded-lg flex items-center justify-center mb-4">
                     <i data-lucide="smartphone" class="w-5 h-5"></i>
                 </div>
@@ -578,7 +550,7 @@
             </div>
 
             <!-- Grid Feature 6 -->
-            <div class="reveal-kinetic p-6 rounded-xl border border-gray-500/5 bg-gray-500/[0.01] hover:border-cyan-500/30 hover:bg-cyan-500/[0.02] hover:-translate-y-1 transition-all duration-300 group" style="animation-delay: 80ms;">
+            <div class="reveal-kinetic spotlight-card p-6 rounded-xl border border-gray-500/5 bg-gray-500/[0.01] hover:border-cyan-500/30 hover:bg-cyan-500/[0.02] hover:-translate-y-1 transition-all duration-300 group" style="animation-delay: 80ms;">
                 <div class="p-2.5 bg-cyan-500/10 text-cyan-500 w-10 h-10 rounded-lg flex items-center justify-center mb-4">
                     <i data-lucide="bell" class="w-5 h-5"></i>
                 </div>
@@ -592,7 +564,7 @@
     </section>
 
     <!-- Core Storage Targets Overview -->
-    <section id="targets" class="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16 border-t border-gray-500/10 relative z-10">
+    <section id="targets" class="max-w-6xl mx-auto px-4 sm:px-6 pt-12 pb-6 md:pt-16 md:pb-8 border-t border-gray-500/10 relative z-10">
         <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             <div class="lg:col-span-5 lg:sticky lg:top-24 space-y-6">
                 <span class="text-xs font-bold text-blue-500 uppercase tracking-widest mono flex items-center space-x-1">
@@ -615,7 +587,7 @@
             
             <div class="lg:col-span-7 space-y-4">
                 <!-- Target Item 1 -->
-                <div class="reveal-kinetic p-5 panel-card border rounded-2xl flex items-start space-x-4 hover:translate-x-2 transition-transform duration-300">
+                <div class="reveal-kinetic spotlight-card p-5 panel-card border rounded-2xl flex items-start space-x-4 hover:translate-x-2 transition-transform duration-300">
                     <div class="p-2.5 bg-blue-500/10 text-blue-500 rounded-xl flex-shrink-0">
                         <i data-lucide="folder" class="w-4.5 h-4.5"></i>
                     </div>
@@ -626,7 +598,7 @@
                 </div>
                 
                 <!-- Target Item 2 -->
-                <div class="reveal-kinetic p-5 panel-card border rounded-2xl flex items-start space-x-4 hover:translate-x-2 transition-transform duration-300">
+                <div class="reveal-kinetic spotlight-card p-5 panel-card border rounded-2xl flex items-start space-x-4 hover:translate-x-2 transition-transform duration-300">
                     <div class="p-2.5 bg-orange-500/10 text-orange-500 rounded-xl flex-shrink-0">
                         <i data-lucide="cpu" class="w-4.5 h-4.5"></i>
                     </div>
@@ -637,7 +609,7 @@
                 </div>
                 
                 <!-- Target Item 3 -->
-                <div class="reveal-kinetic p-5 panel-card border rounded-2xl flex items-start space-x-4 hover:translate-x-2 transition-transform duration-300">
+                <div class="reveal-kinetic spotlight-card p-5 panel-card border rounded-2xl flex items-start space-x-4 hover:translate-x-2 transition-transform duration-300">
                     <div class="p-2.5 bg-pink-500/10 text-pink-500 rounded-xl flex-shrink-0">
                         <i data-lucide="network" class="w-4.5 h-4.5"></i>
                     </div>
@@ -647,6 +619,45 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Product Hunt Reviews -->
+    <section id="reviews" class="max-w-6xl mx-auto px-4 sm:px-6 pt-6 pb-12 md:pt-10 md:pb-20 border-t border-gray-500/10 relative z-10">
+        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10 md:mb-12">
+            <div class="max-w-2xl">
+                <span class="text-xs font-bold text-blue-500 uppercase tracking-widest mono flex items-center space-x-1">
+                    <i data-lucide="heart-handshake" class="w-3.5 h-3.5"></i>
+                    <span>From Product Hunt</span>
+                </span>
+                <h2 class="text-2xl md:text-3xl font-black tracking-tight text-title mt-2 mb-3">Loved by Xcode developers</h2>
+                <p class="text-sm text-body leading-relaxed">Real feedback from developers who got their disk space back—without worrying about the files they need.</p>
+            </div>
+            <a href="https://www.producthunt.com/products/devshed-2?utm_source=badge-follow&utm_medium=badge&utm_campaign=badge-devshed-2" target="_blank" rel="noopener noreferrer" class="inline-flex self-start lg:self-auto rounded-lg overflow-hidden transition-transform duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-transparent" aria-label="Follow DevShed on Product Hunt">
+                <img src="https://api.producthunt.com/widgets/embed-image/v1/follow.svg?product_id=1272805&theme=dark" alt="Follow DevShed on Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" loading="lazy">
+            </a>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-5 md:gap-6">
+            <figure class="reveal-kinetic spotlight-card panel-card border border-gray-500/10 rounded-2xl p-6 md:p-7 bg-white/[0.01] flex flex-col">
+                <blockquote class="text-sm text-title font-medium leading-relaxed flex-1">“Finally an Xcode cleanup tool that lives in the menu bar and actually works. Freed up 34GB on my MacBook without touching anything I needed—the whitelist option is a nice touch.”</blockquote>
+                <figcaption class="mt-6 pt-4 border-t border-gray-500/10 text-xs text-body"><span class="font-bold text-title">Ersin</span> <span class="text-gray-400">· Product Hunt</span></figcaption>
+            </figure>
+
+            <figure class="reveal-kinetic spotlight-card panel-card border border-gray-500/10 rounded-2xl p-6 md:p-7 bg-white/[0.01] flex flex-col" style="animation-delay: 60ms;">
+                <blockquote class="text-sm text-title font-medium leading-relaxed flex-1">“Finally something that actually shows you what’s eating space before nuking it. The menu bar view is clean and reclaiming 30GB felt almost too easy.”</blockquote>
+                <figcaption class="mt-6 pt-4 border-t border-gray-500/10 text-xs text-body"><span class="font-bold text-title">Ceren Bozbey</span> <span class="text-gray-400">· Product Hunt</span></figcaption>
+            </figure>
+
+            <figure class="reveal-kinetic spotlight-card panel-card border border-gray-500/10 rounded-2xl p-6 md:p-7 bg-white/[0.01] flex flex-col" style="animation-delay: 120ms;">
+                <blockquote class="text-sm text-title font-medium leading-relaxed flex-1">“Finally something that lives in the menu bar and just does the job. Cleared out over 30GB of old Derived Data and simulator stuff I had forgotten about—no prompts or nags.”</blockquote>
+                <figcaption class="mt-6 pt-4 border-t border-gray-500/10 text-xs text-body"><span class="font-bold text-title">Halit Bozan</span> <span class="text-gray-400">· Product Hunt</span></figcaption>
+            </figure>
+
+            <figure class="reveal-kinetic spotlight-card panel-card border border-gray-500/10 rounded-2xl p-6 md:p-7 bg-white/[0.01] flex flex-col" style="animation-delay: 180ms;">
+                <blockquote class="text-sm text-title font-medium leading-relaxed flex-1">“Love how it lives right in the menu bar without hijacking the dock, and showing the exact space you can reclaim before you clean is exactly the kind of trust-building detail that makes you feel safe hitting delete.”</blockquote>
+                <figcaption class="mt-6 pt-4 border-t border-gray-500/10 text-xs text-body"><span class="font-bold text-title">Muzaffer Kuşçu</span> <span class="text-gray-400">· Product Hunt</span></figcaption>
+            </figure>
         </div>
     </section>
 
@@ -728,7 +739,7 @@
                     Keep your Mac clean and fast. Download DevShed to gain control over bloated system caches.
                 </p>
                 <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <button onclick="triggerDownload()" class="bg-white text-blue-600 hover:bg-blue-55 font-bold px-7 py-4 rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 text-sm flex items-center justify-center space-x-2">
+                    <button onclick="triggerDownload()" class="bg-white text-blue-600 hover:bg-blue-50 font-bold px-7 py-4 rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 text-sm flex items-center justify-center space-x-2">
                         <i data-lucide="download" class="w-4 h-4 text-blue-600"></i>
                         <span>Download for macOS</span>
                     </button>
@@ -873,6 +884,29 @@
 
             // Render Vector Icons
             lucide.createIcons();
+
+            // Responsive navigation depth and reading progress.
+            const siteNav = document.getElementById('site-nav');
+            const scrollProgress = document.getElementById('scroll-progress');
+            const updateScrollChrome = () => {
+                const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+                const progress = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+                if (scrollProgress) scrollProgress.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+                if (siteNav) siteNav.classList.toggle('nav-scrolled', window.scrollY > 12);
+            };
+            updateScrollChrome();
+            window.addEventListener('scroll', updateScrollChrome, { passive: true });
+
+            // Add a restrained light response to cards on pointer devices.
+            if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+                document.querySelectorAll('.spotlight-card').forEach(card => {
+                    card.addEventListener('pointermove', (event) => {
+                        const bounds = card.getBoundingClientRect();
+                        card.style.setProperty('--spotlight-x', `${event.clientX - bounds.left}px`);
+                        card.style.setProperty('--spotlight-y', `${event.clientY - bounds.top}px`);
+                    });
+                });
+            }
 
             // Mobile/Tablet device check to show warning banner
             const isMac = /Macintosh|MacIntel|MacPPC|Mac68K/.test(navigator.userAgent);
