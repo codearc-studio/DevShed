@@ -510,9 +510,9 @@
                 <div class="p-2.5 bg-purple-500/10 text-purple-500 w-10 h-10 rounded-lg flex items-center justify-center mb-4">
                     <i data-lucide="sliders" class="w-5 h-5"></i>
                 </div>
-                <h4 class="font-bold text-sm text-title mb-2 group-hover:text-purple-500 transition-colors">Choose What to Clean</h4>
+                <h4 class="font-bold text-sm text-title mb-2 group-hover:text-purple-500 transition-colors">Preview Before Cleaning</h4>
                 <p class="text-xs text-body leading-relaxed">
-                    Prevent compile slowdowns. Use the interactive planner to inspect files, view sizes, and select only what you want to wipe.
+                    See the exact folders and per-item sizes before anything is removed, then clean the safe defaults or select individual items yourself.
                 </p>
             </div>
 
@@ -523,7 +523,7 @@
                 </div>
                 <h4 class="font-bold text-sm text-title mb-2 group-hover:text-pink-500 transition-colors">Safe Cleaning</h4>
                 <p class="text-xs text-body leading-relaxed">
-                    DevShed asks you to save open projects and closes Xcode automatically before starting a cleaning cycle, keeping your work secure.
+                    Safe Clean targets regenerable developer data only. An optional setting can ask Xcode to quit first when you want the most conservative cleanup path.
                 </p>
             </div>
 
@@ -545,7 +545,7 @@
                 </div>
                 <h4 class="font-bold text-sm text-title mb-2 group-hover:text-orange-500 transition-colors">Simulator Cleanup</h4>
                 <p class="text-xs text-body leading-relaxed">
-                    Safely clear heavy simulator system files and caches generated during testing to free up local disk space.
+                    Clear simulator logs, caches, and temporary files without deleting your installed simulator devices or app data. Manage unavailable devices separately when you want a deeper reset.
                 </p>
             </div>
 
@@ -554,9 +554,9 @@
                 <div class="p-2.5 bg-cyan-500/10 text-cyan-500 w-10 h-10 rounded-lg flex items-center justify-center mb-4">
                     <i data-lucide="bell" class="w-5 h-5"></i>
                 </div>
-                <h4 class="font-bold text-sm text-title mb-2 group-hover:text-cyan-500 transition-colors">Smart Alerts</h4>
+                <h4 class="font-bold text-sm text-title mb-2 group-hover:text-cyan-500 transition-colors">Scheduled Cleanup</h4>
                 <p class="text-xs text-body leading-relaxed">
-                    Set a storage warning threshold. Let DevShed alert you when hidden Xcode caches get too large, so your drive stays clean.
+                    Pick a weekday and time for a weekly cleanup. If your Mac misses the scheduled run, DevShed catches up the next time it opens.
                 </p>
             </div>
 
@@ -843,7 +843,7 @@
         // Download Action Simulation & Native DMG Target Trigger
         function triggerDownload() {
             // Direct build link referencing your recently hosted DMG package
-            const downloadUrl = "https://github.com/codearc-studio/DevShed/releases/download/v1.0/DevShed.dmg";
+            const downloadUrl = "https://github.com/codearc-studio/DevShed/releases/latest/download/DevShed.dmg";
             
             // Open user modal installation instructions
             const modal = document.getElementById('download-modal');

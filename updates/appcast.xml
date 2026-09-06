@@ -8,7 +8,10 @@
             <sparkle:version>1</sparkle:version>
             <sparkle:shortVersionString>1.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/codearc-studio/DevShed/releases/download/v1.0/DevShed.dmg" length="3492221" type="application/x-apple-diskimage"></enclosure>
+            <enclosure
+                url="https://github.com/codearc-studio/DevShed/releases/download/v1.0/DevShed.dmg"
+                length="3492221"
+                type="application/x-apple-diskimage"/>
         </item>
     </channel>
 </rss>
