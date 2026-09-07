@@ -3,15 +3,31 @@
     <channel>
         <title>DevShed</title>
         <item>
-            <title>1.0</title>
-            <pubDate>Sat, 18 Jul 2026 23:03:20 -0400</pubDate>
-            <sparkle:version>1</sparkle:version>
-            <sparkle:shortVersionString>1.0</sparkle:shortVersionString>
+            <title>2.0</title>
+            <pubDate>Sun, 06 Sep 2026 20:15:51 -0400</pubDate>
+            <link>https://devshed.codearc.studio</link>
+            <sparkle:version>2</sparkle:version>
+            <sparkle:shortVersionString>2.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <enclosure
-                url="https://github.com/codearc-studio/DevShed/releases/download/v1.0/DevShed.dmg"
-                length="3492221"
-                type="application/x-apple-diskimage"/>
+            <description sparkle:format="markdown"><![CDATA[# DevShed 2.0
+
+DevShed 2.0 makes Xcode cleanup safer, clearer, and much more reliable.
+
+## What's new
+
+- **Preview before cleaning** with real per-item disk usage, so you can see exactly what DevShed plans to remove.
+- **More reliable Simulator cleanup** for logs, caches, temporary data, and app caches without blindly deleting installed simulator devices.
+- **More accurate reclaimed-space tracking** based on actual before-and-after disk usage, including partially successful cleanups.
+- **Cleanup history** with the last cleanup time, what was removed, and how much space each item reclaimed.
+- **Scheduled weekly cleanup** with configurable day and time, catch-up behavior, and automatic deferral while Xcode or Simulator is in use.
+- **A much better CLI** installed at `~/.local/bin/devshed`, with preview, targeted cleanup, JSON output, status, and version commands.
+- **Safer one-click cleaning** with a clearer Safe Clean action and reclaimable-space totals that match what the action will actually remove.
+- **Update settings fixes** so automatic check/download preferences persist correctly.
+- **Menu bar UI polish** including a more compact Last Cleanup section and cleaner Settings/Quit actions.
+
+Thanks to everyone who shared feedback on Product Hunt and Reddit. A lot of this release came directly from those requests.
+]]></description>
+            <enclosure url="https://github.com/codearc-studio/DevShed/releases/download/v2.0/DevShed.dmg" length="3656128" type="application/octet-stream" sparkle:edSignature="S7h6vIwcQViF3yFWLgpSeADV9vS3OFK/xveP/jHZhI00mvhUdCkKOUbnbX0rW8HqWV21zgOnCOQE5X7eNCX9Cw=="/>
         </item>
     </channel>
 </rss>
